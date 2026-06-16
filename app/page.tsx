@@ -1,65 +1,90 @@
-import Image from "next/image";
+import { TopNav } from "@/components/TopNav";
+import { Footer } from "@/components/Footer";
+import { Hero } from "@/components/Hero";
+import { HubExplore } from "@/components/HubExplore";
+import {
+  SectionHeading,
+  LibraryBlock,
+  CommunityBlock,
+  EventsBlock,
+  TryItFreeBlock,
+  DocsChatBlock,
+  TrainingBlock,
+} from "@/components/SectionBlocks";
+import { getWorkshops } from "@/lib/data/workshops";
+import { getUpcomingMarketingEvents } from "@/lib/data/marketing-events";
+import { getPillars } from "@/lib/data/pillars";
+import { getGroups } from "@/lib/data/groups";
+import { getLatestVideos } from "@/lib/data/videos";
 
-export default function Home() {
+// Reads from SQLite (content changes at runtime via /admin).
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const workshops = getWorkshops();
+  const pillars = getPillars();
+  const groups = getGroups();
+  const upcomingEvents = getUpcomingMarketingEvents(2); // sidebar = solace.com events
+  const videos = await getLatestVideos(2); // sidebar = latest @Solacedotcom YouTube videos
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <>
+      <TopNav />
+
+      <main className="flex-1">
+        {/* Personalized hero (full width): attended replays or generic brand hero */}
+        <Hero workshops={workshops} />
+
+        {/* Content panel: main content (left) + sticky sidebar (right) */}
+        <HubExplore pillars={pillars} groups={groups} events={upcomingEvents} videos={videos}>
+          <section id="ask-ai">
+            <DocsChatBlock />
+          </section>
+
+          <section id="events">
+            <SectionHeading
+              overline="Upcoming Webinars & Workshops"
+              title="Join a Live Workshop or Webinar"
+              subtitle="Register for upcoming sessions on events.solace.com — replays land here afterward for attendees."
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <EventsBlock />
+          </section>
+
+          <section id="library">
+            <SectionHeading
+              overline="Library"
+              title="Latest in Resource Library"
+              subtitle="The newest from solace.com — by resource type."
+            />
+            <LibraryBlock />
+          </section>
+
+          <section id="training">
+            <SectionHeading
+              overline="Training"
+              title="Get Ahead of the Curve"
+              subtitle="Level up with self-paced courses and certifications from Solace Academy."
+            />
+            <TrainingBlock />
+          </section>
+
+          <section id="community">
+            <SectionHeading
+              overline="Community"
+              title="Join the Conversation"
+              subtitle="Connect with developers and Solace engineers building event-driven systems."
+            />
+            <CommunityBlock />
+          </section>
+        </HubExplore>
+
+        {/* Try It Free — full-width closing CTA */}
+        <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+          <TryItFreeBlock />
+        </section>
       </main>
-    </div>
+
+      <Footer />
+    </>
   );
 }

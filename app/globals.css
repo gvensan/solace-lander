@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Solace Brand System (v3.0, 2025)
+  Source: solace-brand.md
+  - Headlines (H1/H2): New Spirit (stand-in: Fraunces), title case only
+  - Body / UI: Figtree
+  - Overlines / code / labels: Space Mono (<=16pt)
+*/
+
+@theme {
+  /* Primary palette */
+  --color-classic-green: #00c895; /* primary accent, CTAs */
+  --color-bright-green: #abff88; /* gradient start, highlights */
+  --color-deep-blue: #093b5f; /* primary dark bg, text on light */
+  --color-dark-blue: #03213b; /* darkest bg, gradient end */
+
+  /* Secondary / accent */
+  --color-spring-green: #c7ffcb;
+  --color-sky-blue: #c2f7ff;
+  --color-sunrise-yellow: #fff7c2;
+  --color-orange: #fca829;
+  --color-dark-green: #009193;
+
+  /* Grays */
+  --color-cool-12: #f4f4f4;
+  --color-cool-13: #eaeaea;
+  --color-cool-14: #d6d6d6;
+
+  /* Fonts */
+  --font-heading: var(--font-heading); /* New Spirit / Fraunces */
+  --font-body: var(--font-body); /* Figtree */
+  --font-mono: var(--font-mono); /* Space Mono */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    font-family: var(--font-body), "Segoe UI", system-ui, sans-serif;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Headlines: New Spirit (Fraunces), title case — never ALL CAPS */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading), Georgia, serif;
+    letter-spacing: -0.01em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Overline / eyebrow: ALL CAPS, Space Mono */
+  .overline {
+    font-family: var(--font-mono), "Cascadia Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* Space Mono UI label / chip text */
+  .mono-label {
+    font-family: var(--font-mono), "Cascadia Mono", monospace;
+    font-size: 0.8125rem;
+  }
+
+  /* Brand gradients */
+  .bg-solace-blue {
+    background: linear-gradient(135deg, var(--color-deep-blue) 0%, var(--color-dark-blue) 100%);
+  }
+  .bg-solace-green {
+    background: linear-gradient(135deg, var(--color-bright-green) 0%, var(--color-classic-green) 100%);
+  }
+  .bg-solace-teal {
+    background: linear-gradient(135deg, var(--color-dark-green) 0%, var(--color-deep-blue) 100%);
+  }
+
+  /* Gradient text using the Solace Green gradient */
+  .text-solace-green-gradient {
+    background: linear-gradient(135deg, var(--color-bright-green) 0%, var(--color-classic-green) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Smooth scroll for in-page section navigation, offset for sticky nav */
+html {
+  scroll-behavior: smooth;
+}
+section[id] {
+  scroll-margin-top: 5rem;
 }
