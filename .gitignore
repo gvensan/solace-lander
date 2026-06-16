@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # SQLite database (runtime data)
-/data/
-*.db
-*.db-journal
-*.db-wal
+# /data/
+# *.db
+# *.db-journal
+# *.db-wal
