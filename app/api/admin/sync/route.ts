@@ -14,7 +14,9 @@ export async function POST(req: Request) {
   }
 
   const result = await ingestAll();
-  revalidatePath("/");
+  revalidatePath("/", "layout"); // home + every /[slug] page (Hero replays, events)
   revalidatePath("/admin/library");
+  revalidatePath("/admin/workshops");
+  revalidatePath("/admin/events");
   return NextResponse.json({ ok: true, ...result });
 }

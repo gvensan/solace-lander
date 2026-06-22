@@ -12,10 +12,10 @@ export default function AdminPillars() {
       <div className="flex items-center justify-between">
         <div>
           <p className="overline text-classic-green">Content</p>
-          <h1 className="mt-1 text-3xl text-deep-blue">Pillars</h1>
+          <h1 className="mt-1 text-3xl text-deep-blue">Focus Areas</h1>
         </div>
         <Link href="/admin/pillars/new" className="inline-flex items-center gap-2 rounded-full bg-classic-green px-5 py-2.5 text-sm font-semibold text-dark-blue transition hover:brightness-105">
-          <Plus size={16} /> New pillar
+          <Plus size={16} /> New focus area
         </Link>
       </div>
 

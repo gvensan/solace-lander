@@ -1,7 +1,26 @@
 import { replaceAutoCategory } from "./data/library";
 import { replaceAutoEvents } from "./data/events";
 import { replaceAutoMarketingEvents } from "./data/marketing-events";
-import type { LibraryItem, SolaceEvent } from "./types";
+import { replaceAutoWorkshops } from "./data/workshops";
+import type { LibraryItem, SolaceEvent, Workshop } from "./types";
+
+// The events.solace.com "Webinars & Workshops" feed is the source of truth for the
+// admin Workshops list too: each event becomes an auto workshop entry (no replay/attendees
+// until an admin enriches it, which promotes it to source='manual').
+function eventToWorkshop(e: SolaceEvent): Workshop {
+  const today = new Date().toISOString().slice(0, 10);
+  const loc = e.location && e.location !== "Online" ? ` · ${e.location}` : "";
+  return {
+    slug: e.id.replace(/^wws-/, "") || e.id,
+    title: e.title,
+    date: e.date,
+    status: e.date >= today ? "upcoming" : "past",
+    summary: `${e.type}${loc}. Register on events.solace.com — the replay lands here for attendees afterward.`,
+    pillars: [],
+    attendees: [],
+    source: "auto",
+  };
+}
 
 // Pulls fresh Blog + Videos from solace.com's WordPress API and clean-updates the DB.
 // Used by the /admin "Sync now" button and the periodic cron (instrumentation.ts).
@@ -107,6 +126,19 @@ interface WwsEvent {
   venue?: string | { name?: string; address?: string; isVirtual?: boolean; virtualPlatform?: string };
 }
 
+// Collapse the feed's verbose/branded event types (e.g. "Academy Workshop") into a
+// clean, generic category for the badge — while keeping the Webinar/Workshop distinction.
+function normalizeEventType(raw?: string): string {
+  const s = (raw ?? "").toLowerCase();
+  if (s.includes("webinar")) return "Webinar";
+  if (s.includes("workshop")) return "Workshop";
+  if (s.includes("roundtable")) return "Roundtable";
+  if (s.includes("meetup")) return "Meetup";
+  // Otherwise strip brand words and fall back to a sensible default.
+  const cleaned = (raw ?? "").replace(/\b(solace|academy)\b/gi, "").replace(/\s+/g, " ").trim();
+  return cleaned || "Workshop";
+}
+
 // Upcoming webinars & workshops from events.solace.com (Azure Functions backend).
 async function fetchWebinarsWorkshops(): Promise<SolaceEvent[]> {
   const today = new Date().toISOString().slice(0, 10);
@@ -134,7 +166,7 @@ async function fetchWebinarsWorkshops(): Promise<SolaceEvent[]> {
 
     out.push({
       id: `wws-${e.urlStub || e.id}`,
-      type: e.typeMetadata?.name || e.eventType || "Workshop",
+      type: normalizeEventType(e.typeMetadata?.name || e.eventType),
       title: clean(e.title ?? "", 120),
       date: nextDate,
       location: clean(String(location), 60),
@@ -184,14 +216,18 @@ export async function ingestAll(): Promise<{
   video: number;
   resources: number;
   events: number;
+  workshops: number;
   marketingEvents: number;
+  academy: number;
   at: string;
 }> {
   let blog = 0;
   let video = 0;
   let resources = 0;
   let events = 0;
+  let workshops = 0;
   let marketingEvents = 0;
+  let academy = 0;
 
   // Blog + Videos via the WordPress API (fast, dated; powers pillar "latest posts").
   try {
@@ -222,10 +258,14 @@ export async function ingestAll(): Promise<{
   }
 
   // Upcoming webinars & workshops from events.solace.com; prunes expired.
+  // The same feed drives both the sidebar events list AND the admin Workshops list.
   try {
     const evs = await fetchWebinarsWorkshops();
     replaceAutoEvents(evs);
     events = evs.length;
+    const wss = evs.map(eventToWorkshop);
+    replaceAutoWorkshops(wss);
+    workshops = wss.length;
   } catch (e) {
     console.error("[ingest] webinars/workshops failed:", e);
   }
@@ -239,5 +279,14 @@ export async function ingestAll(): Promise<{
     console.error("[ingest] marketing events failed:", e);
   }
 
-  return { blog, video, resources, events, marketingEvents, at: new Date().toISOString() };
+  // Solace Academy catalog (courses + cert paths) from the public training.solace.com API.
+  try {
+    const { syncAcademy } = await import("./academy-sync");
+    const r = await syncAcademy();
+    academy = r.courses + r.paths;
+  } catch (e) {
+    console.error("[ingest] academy failed:", e);
+  }
+
+  return { blog, video, resources, events, workshops, marketingEvents, academy, at: new Date().toISOString() };
 }

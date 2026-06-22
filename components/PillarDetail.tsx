@@ -35,7 +35,7 @@ export function PillarDetail({
     <div>
       <p className="overline text-deep-blue/50">References</p>
       <div className={`mt-3 grid gap-5 ${columns === 2 ? "sm:grid-cols-2" : ""}`}>
-        {groupReferences(pillar.references, groups).map(({ group, items }) => (
+        {groupReferences(pillar.references.filter((r) => r.selected !== false), groups).map(({ group, items }) => (
           <div key={group.id}>
             <p className="mb-2 flex items-center gap-2 text-sm font-semibold text-deep-blue">
               <span aria-hidden>{group.icon}</span>
@@ -65,9 +65,9 @@ export function PillarDetail({
 
       {/* Latest from the blog — auto-ingested posts tagged with this pillar's topic */}
       {pillar.latestPosts && pillar.latestPosts.length > 0 && (
-        <div className="mt-6 border-t border-cool-14 pt-5">
+        <div className="mt-6 rounded-xl border border-classic-green/25 bg-classic-green/[0.06] p-4">
           <div className="mb-2 flex items-center justify-between">
-            <p className="overline flex items-center gap-1.5 text-deep-blue/50">
+            <p className="overline flex items-center gap-1.5 text-classic-green">
               <Rss size={12} /> Latest from the Blog
             </p>
             <a

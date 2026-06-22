@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
-import { trackEvent } from "@/lib/analytics";
 import type { Workshop } from "@/lib/types";
 import {
   PlayCircle,
@@ -116,7 +115,6 @@ function GenericHero({ loggedIn }: { loggedIn: boolean }) {
             href="https://console.solace.cloud/login/new-account"
             target="_blank"
             rel="noreferrer"
-            onClick={() => trackEvent("try_it_free_click", { location: "hero" })}
             className="inline-flex items-center gap-2 rounded-full bg-solace-green px-7 py-3 font-semibold text-dark-blue transition hover:brightness-105"
           >
             Try It Free <Sparkles size={17} />
@@ -146,7 +144,7 @@ export function Hero({ workshops }: { workshops: Workshop[] }) {
 
   const heading = (
     <div className="mb-8">
-      <p className="overline text-bright-green">
+      <p className="overline text-eyebrow">
         Welcome Back{user ? `, ${user.name.split(" ")[0]}` : ""}
       </p>
       <h1 className="mt-2 text-3xl leading-tight sm:text-4xl lg:text-5xl">

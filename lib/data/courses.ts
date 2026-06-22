@@ -1,46 +1,43 @@
-// Training courses for the "Training" section, modeled on the "Get ahead of the curve"
-// shelf at https://training.solace.com/learn. That shelf's exact tiles are served from an
-// auth-gated Docebo LMS (not publicly scrapable), so these are representative Solace
-// learning tracks. Update titles/links here as the catalog changes — all links open the
-// Solace Academy.
+// Training section tiles, mirroring the "Get Ahead of the Curve" boxes on
+// https://training.solace.com/learn (boxes 1, 2 & 4). Box 3 — "Role-Based Learning
+// Paths" — is surfaced as the section's primary CTA instead of a tile.
+// Tiles are informational (no per-tile link); only the CTA navigates.
 
-export type Course = {
+export type TrainingTile = {
   title: string;
-  level: string;
-  description: string;
-  href: string;
   icon: string; // maps to components/Icon.tsx
+  points: string[];
 };
 
-export const COURSES_URL = "https://training.solace.com/learn";
+// Role-based learning paths — our in-app guided page that collates Solace Academy
+// courses + certifications into a role/goal-oriented path.
+export const LEARNING_PATHS_URL = "/learning-path";
 
-export const COURSES: Course[] = [
+export const TRAINING_TILES: TrainingTile[] = [
   {
-    title: "Fundamentals of Event-Driven Architecture",
-    level: "Beginner",
-    description: "Start here — the core concepts behind events, brokers, and event-driven systems.",
-    href: COURSES_URL,
-    icon: "Lightbulb",
+    title: "Get Started for Free",
+    icon: "Rocket",
+    points: [
+      "Learn the Solace essentials with hands-on activity guides and code labs",
+      "Take the Solace Certified Solutions Consultant Exam",
+      "Additional free intro-level courses",
+    ],
   },
   {
-    title: "PubSub+ for Developers",
-    level: "Developer",
-    description: "Hands-on labs for publishing, subscribing, and building apps on Solace PubSub+.",
-    href: COURSES_URL,
-    icon: "Code2",
+    title: "Digital Badges",
+    icon: "BadgeCheck",
+    points: [
+      "Earn digital badges by passing certification exams or attending an instructor-led classroom",
+      "Display earned badges on your LinkedIn profile",
+      "Gain credibility with clients and peers",
+    ],
   },
   {
-    title: "Designing an Event Mesh",
-    level: "Architect",
-    description: "Topic taxonomy, event portal, and patterns for architecting a production event mesh.",
-    href: COURSES_URL,
-    icon: "Network",
-  },
-  {
-    title: "Solace Certification",
-    level: "All levels",
-    description: "Validate your skills and show off your expertise with an official Solace credential.",
-    href: COURSES_URL,
-    icon: "Trophy",
+    title: "Stay Solace Smart",
+    icon: "Sparkles",
+    points: [
+      "Get access to new and future courses through our learning subscription",
+      "Stay up to date with product updates and advanced feature-specific courses",
+    ],
   },
 ];

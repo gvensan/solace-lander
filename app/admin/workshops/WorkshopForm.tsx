@@ -44,7 +44,7 @@ export function WorkshopForm({
         <textarea name="summary" defaultValue={w?.summary} rows={3} required className={input} />
       </div>
       <div>
-        <label className={label}>Pillars</label>
+        <label className={label}>Focus Areas</label>
         <input name="pillars" defaultValue={w?.pillars.join(", ")} className={input} placeholder="event-mesh, agentic-ai" />
         <p className="mt-1 text-xs text-deep-blue/50">Comma-separated ids: {pillarIds.join(", ")}</p>
       </div>

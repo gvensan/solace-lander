@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { COMMUNITY_LINKS } from "@/lib/data/content";
-import { COURSES, COURSES_URL } from "@/lib/data/courses";
+import { TRAINING_TILES, LEARNING_PATHS_URL } from "@/lib/data/courses";
 import { getUpcomingEvents } from "@/lib/data/events";
 import { getLibraryByCategory } from "@/lib/data/library";
 import { LIBRARY_CATEGORIES, categoryMoreUrl } from "@/lib/library-categories";
@@ -92,37 +93,36 @@ export function LibraryBlock() {
 export function TrainingBlock() {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {COURSES.map((course) => (
-          <a
-            key={course.title}
-            href={course.href}
-            target="_blank"
-            rel="noreferrer"
-            className="group flex flex-col rounded-2xl border border-cool-13 bg-white p-5 transition hover:border-classic-green hover:shadow-md"
+      <div className="grid gap-4 sm:grid-cols-3">
+        {TRAINING_TILES.map((tile) => (
+          <div
+            key={tile.title}
+            className="flex flex-col rounded-2xl border border-cool-13 bg-white p-5"
           >
-            <span className="grid h-11 w-11 place-items-center rounded-xl bg-deep-blue/5 text-deep-blue group-hover:bg-classic-green/10 group-hover:text-classic-green">
-              <Icon name={course.icon} size={22} />
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-deep-blue/5 text-deep-blue">
+              <Icon name={tile.icon} size={22} />
             </span>
-            <p className="overline mt-3 text-classic-green">{course.level}</p>
-            <h3 className="mt-1 text-lg leading-snug text-deep-blue group-hover:text-classic-green">
-              {course.title}
-            </h3>
-            <p className="mt-1.5 text-sm text-deep-blue/70">{course.description}</p>
-          </a>
+            <h3 className="mt-3 text-lg leading-snug text-deep-blue">{tile.title}</h3>
+            <ul className="mt-2.5 space-y-2">
+              {tile.points.map((point) => (
+                <li key={point} className="flex gap-2 text-sm text-deep-blue/70">
+                  <Check size={15} className="mt-0.5 shrink-0 text-classic-green" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
       </div>
 
-      {/* See all courses CTA */}
+      {/* Role-based learning paths CTA (replaces "See All Courses") — in-app page */}
       <div className="pt-2 text-center">
-        <a
-          href={COURSES_URL}
-          target="_blank"
-          rel="noreferrer"
+        <Link
+          href={LEARNING_PATHS_URL}
           className="inline-flex items-center gap-2 rounded-full bg-solace-green px-7 py-3 font-semibold text-dark-blue transition hover:brightness-105"
         >
-          See All Courses <ArrowUpRight size={18} />
-        </a>
+          Find Your Learning Path <ArrowUpRight size={18} />
+        </Link>
       </div>
     </div>
   );
@@ -192,7 +192,7 @@ export function DocsChatBlock() {
         <span className="grid h-12 w-12 place-items-center rounded-xl bg-white/10">
           <Sparkles size={22} className="text-bright-green" />
         </span>
-        <p className="overline mt-4 text-bright-green">Ask AI</p>
+        <p className="overline mt-4 text-eyebrow">Ask AI</p>
         <h2 className="mt-1 text-3xl text-white">Instant Answers from the Solace Docs</h2>
         <p className="mt-3 text-white/85">
           DocsChat is Solace&apos;s AI documentation assistant. Ask a question in plain English and get
@@ -284,8 +284,8 @@ export function TryItFreeBlock() {
     <div className="relative overflow-hidden rounded-3xl bg-solace-blue p-8 text-white sm:p-12">
       <Sparkles className="pointer-events-none absolute -right-6 -top-6 text-bright-green/20" size={160} />
       <div className="relative max-w-xl">
-        <p className="overline text-bright-green">Try It Free</p>
-        <h2 className="mt-2 text-3xl text-white sm:text-4xl">Spin Up a Free PubSub+ Cloud Broker</h2>
+        <p className="overline text-eyebrow">Try It Free</p>
+        <h2 className="mt-2 text-3xl text-white sm:text-4xl">Spin Up a Free Solace Cloud Broker</h2>
         <p className="mt-3 text-white/80">
           No credit card. Stand up an event broker in minutes and start building on the digital
           nervous system for the real-time, agentic world.

@@ -37,8 +37,8 @@ export function HubExplore({
           <section id="topics">
             <SectionHeading
               overline="Explore by Topic"
-              title="The Six Learning Pillars of the Solace Platform"
-              subtitle="Open a pillar to see its key concepts and curated references in the panel on the right."
+              title="The Six Focus Areas of the Solace Platform"
+              subtitle="Open a focus area to see its key concepts and curated references in the panel on the right."
             />
             {/* Single column below lg so the inline detail sits flush under the tapped
                 tile (no grid gap); two columns only at lg, where detail uses the sidebar. */}
@@ -74,7 +74,9 @@ export function HubExplore({
             Sticks to the top and rides along as the (taller) main column scrolls — no forced
             internal scrollbar. */}
         <aside className="hidden lg:col-span-4 lg:block lg:self-start">
-          <div className="lg:sticky lg:top-24">
+          {/* Default tiles stick as the long left column scrolls; an open focus-area
+              detail flows to its full height instead (no fixed-height scroll box). */}
+          <div className={selected ? "" : "lg:sticky lg:top-24"}>
             <HubSidebar
               selectedPillar={selected}
               onClear={clear}

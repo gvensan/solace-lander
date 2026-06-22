@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { getWorkshops } from "@/lib/data/workshops";
 import { removeWorkshop } from "../actions";
-import { Plus, Pencil, Trash2, ExternalLink } from "lucide-react";
+import { SyncButton } from "@/components/admin/SyncButton";
+import { Pencil, Trash2, ExternalLink } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -14,13 +15,12 @@ export default function AdminWorkshops() {
         <div>
           <p className="overline text-classic-green">Content</p>
           <h1 className="mt-1 text-3xl text-deep-blue">Workshops</h1>
+          <p className="mt-1 max-w-xl text-sm text-deep-blue/60">
+            Synced from the events.solace.com feed on each cron / Sync. Editing a synced
+            workshop (e.g. adding a replay) claims it as manual, so future syncs won&apos;t overwrite it.
+          </p>
         </div>
-        <Link
-          href="/admin/workshops/new"
-          className="inline-flex items-center gap-2 rounded-full bg-classic-green px-5 py-2.5 text-sm font-semibold text-dark-blue transition hover:brightness-105"
-        >
-          <Plus size={16} /> New workshop
-        </Link>
+        <SyncButton />
       </div>
 
       <div className="mt-8 overflow-hidden rounded-2xl border border-cool-13 bg-white">
@@ -37,6 +37,13 @@ export default function AdminWorkshops() {
                   }`}
                 >
                   {w.status}
+                </span>
+                <span
+                  className={`mono-label rounded-full px-2 py-0.5 text-xs ${
+                    w.source === "auto" ? "bg-sky-blue/40 text-deep-blue/70" : "bg-classic-green/15 text-dark-green"
+                  }`}
+                >
+                  {w.source === "auto" ? "synced" : "manual"}
                 </span>
                 <span className="text-xs text-deep-blue/50">{w.date}</span>
                 <span className="text-xs text-deep-blue/50">· {w.attendees.length} attendees</span>

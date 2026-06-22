@@ -98,7 +98,9 @@ export default async function WorkshopPage({
         </div>
       </div>
 
-      <main className="mx-auto max-w-7xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+      {/* Content sits on the brand section background (pale mint) */}
+      <div className="bg-section flex-1">
+      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-12 gap-8">
           {/* Left sticky section navigator */}
           <aside className="hidden lg:col-span-3 lg:block">
@@ -120,7 +122,7 @@ export default async function WorkshopPage({
               <SectionHeading
                 overline="Section 2"
                 title="Explore by Topic"
-                subtitle="The six pillars of the Solace platform. Open a card to see key concepts and curated references."
+                subtitle="The six focus areas of the Solace platform. Open a card to see key concepts and curated references."
               />
               <PillarGrid pillars={pillars} groups={groups} />
             </section>
@@ -190,6 +192,7 @@ export default async function WorkshopPage({
           </aside>
         </div>
       </main>
+      </div>
 
       <Footer />
     </>

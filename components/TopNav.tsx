@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { useAuth } from "@/lib/auth";
 import { LoginModal } from "./LoginModal";
-import { trackEvent } from "@/lib/analytics";
 import { Radio, ChevronDown, LogOut, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/#topics", label: "Learning Pillars" },
+  { href: "/#topics", label: "Focus Areas" },
   { href: "/#events", label: "Workshops & Webinars" },
   { href: "/#library", label: "Library" },
   { href: "/#training", label: "Training" },
@@ -20,6 +19,22 @@ export function TopNav() {
   const [loginOpen, setLoginOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Same-page hash links: scroll explicitly so the section reliably comes into view
+  // (the App Router intercepts <Link> clicks and skips the browser's native hash scroll).
+  // Off the home page, let the Link navigate to "/#id" and the browser scrolls on load.
+  const handleNavClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    setMobileOpen(false);
+    const id = href.split("#")[1];
+    if (id && window.location.pathname === "/") {
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", `#${id}`);
+      }
+    }
+  };
 
   return (
     <>
@@ -41,6 +56,7 @@ export function TopNav() {
               <Link
                 key={l.href}
                 href={l.href}
+                onClick={(e) => handleNavClick(e, l.href)}
                 className="text-sm text-white/80 transition hover:text-white"
               >
                 {l.label}
@@ -61,7 +77,6 @@ export function TopNav() {
               href="https://console.solace.cloud/login/new-account"
               target="_blank"
               rel="noreferrer"
-              onClick={() => trackEvent("try_it_free_click", { location: "nav" })}
               className="hidden rounded-full bg-solace-green px-4 py-2 text-sm font-semibold text-dark-blue transition hover:brightness-105 sm:inline-block"
             >
               Try It Free
@@ -127,7 +142,7 @@ export function TopNav() {
                   <Link
                     key={l.href}
                     href={l.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={(e) => handleNavClick(e, l.href)}
                     className="rounded-lg px-3 py-3 text-white/85 transition hover:bg-white/10 hover:text-white"
                   >
                     {l.label}

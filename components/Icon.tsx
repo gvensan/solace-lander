@@ -19,6 +19,10 @@ import {
   Lightbulb,
   Newspaper,
   FlaskConical,
+  Rocket,
+  BadgeCheck,
+  Sparkles,
+  Megaphone,
   type LucideProps,
 } from "lucide-react";
 import type { ComponentType } from "react";
@@ -45,6 +49,10 @@ const ICONS: Record<string, ComponentType<LucideProps>> = {
   Lightbulb,
   Newspaper,
   FlaskConical,
+  Rocket,
+  BadgeCheck,
+  Sparkles,
+  Megaphone,
 };
 
 export function Icon({ name, ...props }: { name: string } & LucideProps) {

@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { Reference, Group } from "@/lib/types";
-import { GripVertical, ChevronUp, ChevronDown, Trash2, Plus, Pencil, Check } from "lucide-react";
+import { GripVertical, ChevronUp, ChevronDown, Trash2, Plus, Pencil, Check, Eye, EyeOff, Loader2 } from "lucide-react";
+import { savePillarReferences } from "@/app/admin/actions";
+
+const isSelected = (r: Reference) => r.selected !== false; // undefined ⇒ shown
 
 function move<T>(arr: T[], from: number, to: number): T[] {
   if (to < 0 || to >= arr.length) return arr;
@@ -22,37 +25,53 @@ const field =
 export function PillarReferencesEditor({
   initialReferences,
   groups,
+  pillarId,
 }: {
   initialReferences: Reference[];
   groups: Group[];
+  pillarId?: string;
 }) {
   const fallbackGroup = groups[0]?.id ?? "concept";
   const [refs, setRefs] = useState<Reference[]>(initialReferences);
   const [editR, setEditR] = useState<number | null>(null);
   const [dragR, setDragR] = useState<number | null>(null);
+  const [saving, startSave] = useTransition();
 
   const byId = new Map(groups.map((g) => [g.id, g]));
 
   function setRef(i: number, patch: Partial<Reference>) {
     setRefs((r) => r.map((x, idx) => (idx === i ? { ...x, ...patch } : x)));
   }
+
+  // Show/hide toggle persists immediately (for an existing focus area), so
+  // curation sticks even without pressing "Save focus area".
+  function toggleShown(i: number) {
+    const next = refs.map((x, idx) => (idx === i ? { ...x, selected: !isSelected(x) } : x));
+    setRefs(next);
+    if (pillarId) startSave(() => savePillarReferences(pillarId, next));
+  }
   function addRef() {
-    setRefs((r) => [...r, { group: fallbackGroup, title: "", url: "" }]);
+    setRefs((r) => [...r, { group: fallbackGroup, title: "", url: "", selected: true }]);
     setEditR(refs.length);
   }
 
+  const selectedCount = refs.filter(isSelected).length;
+
   return (
     <div>
-      {/* Hidden input keeps the server-action format: group | title | url, one per line */}
+      {/* Hidden input: group | title | url | selected(1/0), one per line */}
       <input
         type="hidden"
         name="references"
-        value={refs.map((r) => `${r.group} | ${r.title} | ${r.url}`).join("\n")}
+        value={refs.map((r) => `${r.group} | ${r.title} | ${r.url} | ${isSelected(r) ? "1" : "0"}`).join("\n")}
       />
 
       <div className="mb-2 flex items-center justify-between">
         <label className="block text-sm font-semibold text-deep-blue">References</label>
-        <span className="mono-label text-deep-blue/40">{refs.length}</span>
+        <span className="mono-label flex items-center gap-1.5 text-deep-blue/40">
+          {saving && <Loader2 size={12} className="animate-spin text-classic-green" />}
+          {selectedCount} of {refs.length} shown
+        </span>
       </div>
 
       <div className="space-y-1.5">
@@ -70,7 +89,7 @@ export function PillarReferencesEditor({
                 setDragR(null);
               }}
               onDragEnd={() => setDragR(null)}
-              className={`${rowBase} ${dragR === i ? "opacity-40" : ""} ${editing ? "items-start border-classic-green" : "cursor-grab"}`}
+              className={`${rowBase} ${dragR === i ? "opacity-40" : ""} ${editing ? "items-start border-classic-green" : "cursor-grab"} ${!isSelected(r) && !editing ? "opacity-55" : ""}`}
             >
               <GripVertical size={15} className="mt-1 shrink-0 text-deep-blue/30" />
               {editing ? (
@@ -96,6 +115,14 @@ export function PillarReferencesEditor({
                 </button>
               )}
               <div className={`flex shrink-0 items-center ${editing ? "flex-col" : ""}`}>
+                <button
+                  type="button"
+                  onClick={() => toggleShown(i)}
+                  className={`${iconBtn} ${isSelected(r) ? "text-classic-green hover:text-classic-green" : ""}`}
+                  title={isSelected(r) ? "Shown on site — click to hide" : "Hidden from site — click to show"}
+                >
+                  {isSelected(r) ? <Eye size={15} /> : <EyeOff size={15} />}
+                </button>
                 {editing ? (
                   <button type="button" onClick={() => setEditR(null)} className={`${iconBtn} text-classic-green`} title="Done">
                     <Check size={15} />

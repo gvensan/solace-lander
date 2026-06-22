@@ -14,7 +14,7 @@ export function SyncButton() {
       const res = await fetch("/api/admin/sync", { method: "POST" });
       const j = await res.json();
       if (!res.ok) throw new Error(j.error || "Sync failed");
-      setMsg(`Pulled ${j.blog} blog · ${j.video} video · ${j.resources} resources · ${j.events} W&W · ${j.marketingEvents} events`);
+      setMsg(`Pulled ${j.blog} blog · ${j.video} video · ${j.resources} resources · ${j.events} W&W · ${j.workshops} workshops · ${j.marketingEvents} events`);
       setState("done");
       setTimeout(() => location.reload(), 1200);
     } catch (e) {

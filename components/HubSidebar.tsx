@@ -76,7 +76,7 @@ function DefaultTiles({ events, videos }: { events: SolaceEvent[]; videos: Video
         <span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10">
           <Headset size={20} className="text-bright-green" />
         </span>
-        <p className="overline mt-3 text-bright-green">Looking to jumpstart your learning?</p>
+        <p className="overline mt-3 text-eyebrow">Looking to jumpstart your learning?</p>
         <h3 className="mt-1 text-lg text-white">Engage with an Advocate</h3>
         <p className="mt-1 text-sm text-white/75">
           Talk to a Solace Developer Advocate to sharpen your understanding of event-driven
@@ -145,7 +145,7 @@ export function HubSidebar({
           <Icon name={selectedPillar.icon} size={20} className="text-dark-blue" />
         </div>
         <div>
-          <p className="overline text-classic-green">Pillar {selectedPillar.number}</p>
+          <p className="overline text-classic-green">Focus Area {selectedPillar.number}</p>
           <h3 className="text-xl leading-tight text-deep-blue">{selectedPillar.title}</h3>
         </div>
       </div>

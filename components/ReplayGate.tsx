@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import type { Workshop } from "@/lib/types";
 import { LoginModal } from "./LoginModal";
-import { trackEvent } from "@/lib/analytics";
 import { Lock, FileText, FolderGit2, PlayCircle } from "lucide-react";
 
 export function ReplayGate({ workshop }: { workshop: Workshop }) {
@@ -85,10 +84,7 @@ export function ReplayGate({ workshop }: { workshop: Workshop }) {
           {teaser}
           {!user && (
             <button
-              onClick={() => {
-                trackEvent("replay_unlock_click", { workshop: workshop.slug });
-                setLoginOpen(true);
-              }}
+              onClick={() => setLoginOpen(true)}
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-solace-green px-5 py-2.5 text-sm font-semibold text-dark-blue transition hover:brightness-105"
             >
               <Lock size={16} /> Log in to unlock replay

@@ -35,6 +35,8 @@ export default async function Home() {
         {/* Personalized hero (full width): attended replays or generic brand hero */}
         <Hero workshops={workshops} />
 
+        {/* Content area sits on the brand section background (pale mint); white cards pop against it */}
+        <div className="bg-section">
         {/* Content panel: main content (left) + sticky sidebar (right) */}
         <HubExplore pillars={pillars} groups={groups} events={upcomingEvents} videos={videos}>
           <section id="ask-ai">
@@ -82,6 +84,7 @@ export default async function Home() {
         <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
           <TryItFreeBlock />
         </section>
+        </div>
       </main>
 
       <Footer />

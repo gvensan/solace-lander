@@ -15,6 +15,7 @@ export interface Reference {
   group: string; // Group id
   title: string;
   url: string;
+  selected?: boolean; // shown on the public focus-area panel (undefined ⇒ shown)
 }
 
 export interface PillarPost {
@@ -45,6 +46,7 @@ export interface Workshop {
   slidesUrl?: string;
   videoId?: string; // YouTube id for the (gated) replay
   attendees: string[]; // emails matched to SolaceID at login (mock)
+  source?: "auto" | "manual"; // 'auto' = synced from the events.solace.com feed; 'manual' = admin-created replay hub
 }
 
 export interface LibraryItem {

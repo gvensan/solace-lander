@@ -14,7 +14,7 @@ export default function AdminGroups() {
           <p className="overline text-classic-green">Content</p>
           <h1 className="mt-1 text-3xl text-deep-blue">Reference Groups</h1>
           <p className="mt-1 text-sm text-deep-blue/60">
-            Categories that pillar references are organized under. Order controls how groups appear.
+            Categories that focus-area references are organized under. Order controls how groups appear.
           </p>
         </div>
         <Link href="/admin/groups/new" className="inline-flex items-center gap-2 rounded-full bg-classic-green px-5 py-2.5 text-sm font-semibold text-dark-blue transition hover:brightness-105">

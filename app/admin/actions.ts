@@ -10,13 +10,98 @@ import {
   updateMarketingEvent,
   deleteMarketingEvent,
 } from "@/lib/data/marketing-events";
-import { createPillar, updatePillar, deletePillar } from "@/lib/data/pillars";
+import { createPillar, updatePillar, deletePillar, getPillar } from "@/lib/data/pillars";
+import type { Reference } from "@/lib/types";
 import { createLibraryItem, updateLibraryItem, deleteLibraryItem } from "@/lib/data/library";
 import { createGroup, updateGroup, deleteGroup } from "@/lib/data/groups";
+import { markReviewed, markAllReviewed } from "@/lib/data/academy";
 import type { Workshop, SolaceEvent, Pillar, LibraryItem, Group } from "@/lib/types";
 
 async function requireAdmin() {
   if (!(await isAdmin())) throw new Error("Forbidden: admin role required");
+}
+
+// ---- Academy catalog sync (courses + cert paths) ----
+export async function syncAcademyCatalog() {
+  await requireAdmin();
+  const { syncAcademy } = await import("@/lib/academy-sync");
+  await syncAcademy();
+  revalidatePath("/admin/courses");
+  revalidatePath("/admin");
+}
+
+export async function reviewCourse(id: number) {
+  await requireAdmin();
+  markReviewed(id);
+  revalidatePath("/admin/courses");
+}
+
+export async function reviewAllCourses() {
+  await requireAdmin();
+  markAllReviewed();
+  revalidatePath("/admin/courses");
+}
+
+// ---- Learning-path builder (per-role course sequences) ----
+function revalidatePaths() {
+  revalidatePath("/admin/learning-paths");
+  revalidatePath("/learning-path");
+}
+
+export async function pbAddCourse(bandId: number, courseId: number) {
+  await requireAdmin();
+  const { addCourseToBand } = await import("@/lib/data/path-builder");
+  addCourseToBand(bandId, courseId);
+  revalidatePaths();
+}
+
+export async function pbRemoveStep(stepId: number) {
+  await requireAdmin();
+  const { removeStep } = await import("@/lib/data/path-builder");
+  removeStep(stepId);
+  revalidatePaths();
+}
+
+export async function pbMoveStep(stepId: number, dir: "up" | "down") {
+  await requireAdmin();
+  const { moveStep } = await import("@/lib/data/path-builder");
+  moveStep(stepId, dir);
+  revalidatePaths();
+}
+
+export async function pbToggleElective(stepId: number) {
+  await requireAdmin();
+  const { toggleStepElective } = await import("@/lib/data/path-builder");
+  toggleStepElective(stepId);
+  revalidatePaths();
+}
+
+export async function pbAddBand(roleId: string, title: string, tier: number) {
+  await requireAdmin();
+  const { addBand } = await import("@/lib/data/path-builder");
+  addBand(roleId, title, tier);
+  revalidatePaths();
+}
+
+export async function pbRenameBand(bandId: number, title: string) {
+  await requireAdmin();
+  const { renameBand } = await import("@/lib/data/path-builder");
+  renameBand(bandId, title);
+  revalidatePaths();
+}
+
+export async function pbMoveBand(bandId: number, dir: "up" | "down") {
+  await requireAdmin();
+  const { moveBand } = await import("@/lib/data/path-builder");
+  moveBand(bandId, dir);
+  revalidatePaths();
+}
+
+export async function pbDeleteBand(bandId: number) {
+  await requireAdmin();
+  const { deleteBand } = await import("@/lib/data/path-builder");
+  deleteBand(bandId);
+  revalidatePaths();
 }
 
 function str(fd: FormData, key: string): string {
@@ -48,6 +133,8 @@ function parseWorkshop(fd: FormData): Workshop {
     slidesUrl: str(fd, "slidesUrl") || undefined,
     videoId: str(fd, "videoId") || undefined,
     attendees: list(fd, "attendees"),
+    // Any admin edit claims the workshop as manual, so the next feed sync won't overwrite it.
+    source: "manual",
   };
 }
 
@@ -127,8 +214,8 @@ function parsePillar(fd: FormData): Pillar {
     topicCategoryId: str(fd, "topicCategoryId") ? Number(str(fd, "topicCategoryId")) : undefined,
     references: lines(fd, "references")
       .map((l) => {
-        const [group, title, url] = l.split("|").map((s) => s.trim());
-        return { group: group ?? "", title: title ?? "", url: url ?? "" };
+        const [group, title, url, sel] = l.split("|").map((s) => s.trim());
+        return { group: group ?? "", title: title ?? "", url: url ?? "", selected: sel !== "0" };
       })
       .filter((r) => r.title && r.url),
   };
@@ -139,7 +226,9 @@ export async function savePillar(origId: string | null, fd: FormData) {
   const p = parsePillar(fd);
   if (origId) updatePillar(origId, p);
   else createPillar(p);
-  revalidatePath("/");
+  // Layout-level: busts the client router cache for the home AND every workshop page
+  // (both render focus-area references), so edits show without a manual refresh.
+  revalidatePath("/", "layout");
   revalidatePath("/admin/pillars");
   redirect("/admin/pillars");
 }
@@ -147,8 +236,19 @@ export async function savePillar(origId: string | null, fd: FormData) {
 export async function removePillar(id: string) {
   await requireAdmin();
   deletePillar(id);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   revalidatePath("/admin/pillars");
+}
+
+// Persist just the references array for an existing focus area, immediately
+// (used by the show/hide eye toggle so curation sticks without a full Save).
+export async function savePillarReferences(pillarId: string, references: Reference[]) {
+  await requireAdmin();
+  const existing = getPillar(pillarId);
+  if (!existing) return;
+  updatePillar(pillarId, { ...existing, references });
+  revalidatePath("/", "layout");
+  revalidatePath(`/admin/pillars/${pillarId}/edit`);
 }
 
 // ---- Library ----

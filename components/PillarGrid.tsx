@@ -31,7 +31,7 @@ export function PillarGrid({ pillars, groups }: { pillars: Pillar[]; groups: Gro
               <Icon name={open.icon} size={20} className="text-dark-blue" />
             </div>
             <div>
-              <p className="overline text-classic-green">Pillar {open.number}</p>
+              <p className="overline text-classic-green">Focus Area {open.number}</p>
               <h3 className="text-2xl text-deep-blue">{open.title}</h3>
             </div>
           </div>

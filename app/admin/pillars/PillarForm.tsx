@@ -57,15 +57,15 @@ export function PillarForm({
           placeholder="e.g. 857 (Solace Agent Mesh)"
         />
         <p className="mt-1 text-xs text-deep-blue/50">
-          solace.com WP category id — latest posts in it auto-surface in this pillar.
+          solace.com WP category id — latest posts in it auto-surface in this focus area.
         </p>
       </div>
 
-      <PillarReferencesEditor initialReferences={p?.references ?? []} groups={groups} />
+      <PillarReferencesEditor initialReferences={p?.references ?? []} groups={groups} pillarId={p?.id} />
 
       <div className="flex items-center gap-3 pt-2">
         <button type="submit" className="rounded-full bg-classic-green px-6 py-2.5 text-sm font-semibold text-dark-blue transition hover:brightness-105">
-          Save pillar
+          Save focus area
         </button>
         <Link href="/admin/pillars" className="text-sm text-deep-blue/60 hover:text-deep-blue">
           Cancel

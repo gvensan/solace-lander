@@ -14,8 +14,34 @@ function create(): Database.Database {
   const db = new Database(join(dir, "lander.db"));
   db.pragma("journal_mode = WAL");
   init(db);
+  migrate(db);
   seed(db);
   return db;
+}
+
+// Versioned schema migrations for already-created DBs (init() only adds new tables,
+// never alters existing ones). Bump user_version + add a block for each change.
+function migrate(db: Database.Database) {
+  const version = db.pragma("user_version", { simple: true }) as number;
+
+  // v1: workshops become feed-synced. Add a `source` column and drop the legacy
+  // dummy seed replay hubs (the live page's "Workshops & Webinars" now comes from
+  // the events.solace.com sync; real replay hubs are added manually as source='manual').
+  if (version < 1) {
+    const cols = db.prepare("PRAGMA table_info(workshops)").all() as { name: string }[];
+    if (!cols.some((c) => c.name === "source")) {
+      db.exec("ALTER TABLE workshops ADD COLUMN source TEXT NOT NULL DEFAULT 'manual'");
+    }
+    db.prepare(
+      `DELETE FROM workshops WHERE slug IN (
+        'distributed-agentic-systems-sam-a2a-mcp',
+        'observability-distributed-tracing',
+        'event-driven-integration-fundamentals',
+        'design-govern-event-portal'
+      )`,
+    ).run();
+    db.pragma("user_version = 1");
+  }
 }
 
 function init(db: Database.Database) {
@@ -36,7 +62,8 @@ function init(db: Database.Database) {
       repoUrl   TEXT,
       slidesUrl TEXT,
       videoId   TEXT,
-      attendees TEXT NOT NULL DEFAULT '[]'    -- JSON array of emails
+      attendees TEXT NOT NULL DEFAULT '[]',   -- JSON array of emails
+      source    TEXT NOT NULL DEFAULT 'manual' -- 'auto' (synced from events feed) | 'manual' (replay hub)
     );
 
     CREATE TABLE IF NOT EXISTS events (
@@ -88,6 +115,52 @@ function init(db: Database.Database) {
       topics      TEXT NOT NULL DEFAULT ',',  -- comma-wrapped WP category ids, e.g. ',857,790,'
       videoId     TEXT
     );
+
+    -- Per-role learning paths (admin-curated). A role's timeline = ordered bands, each
+    -- band = ordered steps. A step references a synced course (course_id) or is a custom
+    -- node (exam/overview/in-path) with inline fields. Seeded from the curated defaults.
+    CREATE TABLE IF NOT EXISTS path_bands (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      role_id       TEXT NOT NULL,
+      position      INTEGER NOT NULL,
+      stage         INTEGER NOT NULL DEFAULT 1,   -- 1|2|3 (timeline banding)
+      title         TEXT NOT NULL,
+      subtitle      TEXT,
+      path_url      TEXT,
+      certification TEXT,
+      cost          TEXT,
+      total_time    TEXT
+    );
+    CREATE TABLE IF NOT EXISTS path_steps (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      band_id         INTEGER NOT NULL,
+      position        INTEGER NOT NULL,
+      course_id       INTEGER,                     -- → academy_courses.id (null for custom)
+      custom_title    TEXT,
+      custom_url      TEXT,
+      custom_duration TEXT,
+      custom_price    TEXT,
+      elective        INTEGER NOT NULL DEFAULT 0,
+      cert            INTEGER NOT NULL DEFAULT 0,
+      note            TEXT
+    );
+
+    -- Solace Academy catalog (courses + cert/learning-plan paths), synced from the
+    -- public training.solace.com catalog API. Read-only mirror; refreshed by sync/cron.
+    CREATE TABLE IF NOT EXISTS academy_courses (
+      id            INTEGER PRIMARY KEY,        -- Docebo item_id
+      type          TEXT NOT NULL,              -- 'course' | 'learning_plan'
+      title         TEXT NOT NULL,
+      url           TEXT NOT NULL,
+      price_usd     INTEGER NOT NULL DEFAULT 0, -- 0 = free
+      duration_sec  INTEGER NOT NULL DEFAULT 0,
+      category      TEXT NOT NULL DEFAULT '',   -- catalog (catalogue_name)
+      plan_courses  TEXT,                        -- JSON [{idCourse,name}] for learning plans
+      first_seen_at TEXT NOT NULL,
+      last_synced_at TEXT NOT NULL,
+      reviewed      INTEGER NOT NULL DEFAULT 0, -- 0 = newly added, needs review
+      removed       INTEGER NOT NULL DEFAULT 0  -- 1 = no longer in the catalog
+    );
   `);
 }
 
@@ -103,64 +176,13 @@ function seed(db: Database.Database) {
     ["admin@solace.com", "DevRel Admin", "admin"],
   ];
 
+  // Workshops are synced from the events.solace.com "Webinars & Workshops" feed
+  // (cron / Sync) as source='auto'; real replay hubs are added manually in admin. Start empty.
   const insertWorkshop = db.prepare(`
-    INSERT INTO workshops (slug, title, date, status, summary, pillars, repoUrl, slidesUrl, videoId, attendees)
-    VALUES (@slug, @title, @date, @status, @summary, @pillars, @repoUrl, @slidesUrl, @videoId, @attendees)
+    INSERT INTO workshops (slug, title, date, status, summary, pillars, repoUrl, slidesUrl, videoId, attendees, source)
+    VALUES (@slug, @title, @date, @status, @summary, @pillars, @repoUrl, @slidesUrl, @videoId, @attendees, @source)
   `);
-  const workshops = [
-    {
-      slug: "distributed-agentic-systems-sam-a2a-mcp",
-      title: "Building Distributed Agentic Systems with Solace Agent Mesh, A2A & MCP",
-      date: "2026-06-10",
-      status: "past",
-      summary:
-        "A hands-on build of a multi-agent system on Solace Agent Mesh, wiring agents over A2A and MCP with an event-driven backbone.",
-      pillars: JSON.stringify(["agentic-ai", "apis-dev-tools", "event-mesh"]),
-      repoUrl: "https://github.com/SolaceLabs/solace-agent-mesh",
-      slidesUrl: "https://solace.com/",
-      videoId: "dQw4w9WgXcQ",
-      attendees: JSON.stringify(["attendee@solace.com", "gvensan21@gmail.com"]),
-    },
-    {
-      slug: "observability-distributed-tracing",
-      title: "Observability Deep Dive: Distributed Tracing on Solace",
-      date: "2026-07-08",
-      status: "upcoming",
-      summary:
-        "Instrument an event mesh end-to-end with OpenTelemetry, then trace a message across send, enqueue, and receive spans into your own backend.",
-      pillars: JSON.stringify(["operate-observe", "event-mesh"]),
-      repoUrl: "https://github.com/SolaceLabs",
-      slidesUrl: null,
-      videoId: null,
-      attendees: JSON.stringify([]),
-    },
-    {
-      slug: "event-driven-integration-fundamentals",
-      title: "Event-Driven Integration Fundamentals",
-      date: "2026-05-20",
-      status: "past",
-      summary:
-        "From your first event broker to pub/sub, request-reply, and consumer scaling — the core patterns of an event mesh, hands-on.",
-      pillars: JSON.stringify(["event-mesh", "integrations"]),
-      repoUrl: "https://github.com/SolaceLabs",
-      slidesUrl: "https://solace.com/",
-      videoId: "dQw4w9WgXcQ",
-      attendees: JSON.stringify(["attendee@solace.com"]),
-    },
-    {
-      slug: "design-govern-event-portal",
-      title: "Designing & Governing with Event Portal",
-      date: "2026-04-15",
-      status: "past",
-      summary:
-        "Model an application domain, bind schemas to events, and catalog a runtime mesh using Event Portal Designer and the AI Design Assistant.",
-      pillars: JSON.stringify(["design-govern", "apis-dev-tools"]),
-      repoUrl: "https://github.com/SolaceLabs",
-      slidesUrl: "https://solace.com/",
-      videoId: "dQw4w9WgXcQ",
-      attendees: JSON.stringify(["someoneelse@solace.com"]),
-    },
-  ];
+  const workshops: Array<Record<string, string | null>> = [];
 
   const insertEvent = db.prepare(`
     INSERT INTO events (id, type, title, date, location, registerUrl, source)

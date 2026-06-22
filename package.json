@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@next/third-parties": "^16.2.9",
     "better-sqlite3": "^12.10.1",
     "fuse.js": "^7.4.2",
     "lucide-react": "^1.18.0",

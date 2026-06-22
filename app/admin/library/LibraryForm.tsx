@@ -55,7 +55,7 @@ export function LibraryForm({
         <div>
           <label className={label}>Topic category ids</label>
           <input name="topics" defaultValue={i?.topics.join(", ")} className={input} placeholder="857, 790" />
-          <p className="mt-1 text-xs text-deep-blue/50">Comma-separated solace.com category ids (maps to pillars).</p>
+          <p className="mt-1 text-xs text-deep-blue/50">Comma-separated solace.com category ids (maps to focus areas).</p>
         </div>
         <div>
           <label className={label}>YouTube Video ID (videos)</label>
