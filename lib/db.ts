@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
-import { mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { mkdirSync, existsSync, copyFileSync } from "node:fs";
+import { join, dirname } from "node:path";
 import { PILLARS_SEED, LIBRARY_SEED, GROUPS_SEED } from "./seed-data";
 
 // Single shared connection. Stash on globalThis so Next.js dev HMR doesn't open many.
@@ -8,10 +8,36 @@ declare global {
   var __landerDb: Database.Database | undefined;
 }
 
+// Resolve a *writable* path for the SQLite file.
+// - Local/dev or a host with a persistent disk: ./data/lander.db (overridable via LANDER_DB_PATH).
+// - Serverless (Netlify/AWS Lambda): the app dir is read-only, so stage the DB bundled at
+//   ./data/lander.db into /tmp (the only writable FS) and run from there.
+function resolveDbPath(): string {
+  if (process.env.LANDER_DB_PATH) {
+    mkdirSync(dirname(process.env.LANDER_DB_PATH), { recursive: true });
+    return process.env.LANDER_DB_PATH;
+  }
+  const bundled = join(process.cwd(), "data", "lander.db");
+  const serverless = !!(
+    process.env.NETLIFY ||
+    process.env.LAMBDA_TASK_ROOT ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME
+  );
+  if (!serverless) {
+    mkdirSync(dirname(bundled), { recursive: true });
+    return bundled;
+  }
+  const tmp = "/tmp/lander.db";
+  try {
+    if (!existsSync(tmp) && existsSync(bundled)) copyFileSync(bundled, tmp);
+  } catch (e) {
+    console.error("[db] could not stage bundled DB into /tmp:", e);
+  }
+  return tmp;
+}
+
 function create(): Database.Database {
-  const dir = join(process.cwd(), "data");
-  mkdirSync(dir, { recursive: true });
-  const db = new Database(join(dir, "lander.db"));
+  const db = new Database(resolveDbPath());
   db.pragma("journal_mode = WAL");
   init(db);
   migrate(db);
