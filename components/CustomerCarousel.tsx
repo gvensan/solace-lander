@@ -25,7 +25,7 @@ export function CustomerCarousel() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <p className="overline flex items-center gap-2 text-classic-green">
+      <p className="overline flex items-center gap-2 text-deep-blue">
         <Building2 size={14} /> New Customers
       </p>
 
@@ -75,7 +75,7 @@ export function CustomerCarousel() {
         href={current.href}
         target="_blank"
         rel="noreferrer"
-        className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-classic-green hover:underline"
+        className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-deep-blue hover:underline"
       >
         Learn More <ArrowUpRight size={14} />
       </a>

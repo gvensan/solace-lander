@@ -11,7 +11,7 @@ export default function AdminLearningPaths() {
   return (
     <div>
       <div className="max-w-2xl">
-        <p className="overline text-classic-green">Solace Academy</p>
+        <p className="overline text-deep-blue">Solace Academy</p>
         <h1 className="mt-1 text-3xl text-deep-blue">Learning Path Builder</h1>
         <p className="mt-1 text-sm text-deep-blue/60">
           Design each role&apos;s course sequence — add, remove, reorder, and mark courses optional.

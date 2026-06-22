@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 import { useAuth } from "@/lib/auth";
 import { LoginModal } from "./LoginModal";
@@ -16,9 +17,14 @@ const NAV_LINKS = [
 
 export function TopNav() {
   const { user, logout } = useAuth();
-  const [loginOpen, setLoginOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Login is hidden from the nav; the sign-in dialog opens only via the /login URL.
+  const loginOpen = pathname === "/login";
+  const closeLogin = () => router.push("/");
 
   // Same-page hash links: scroll explicitly so the section reliably comes into view
   // (the App Router intercepts <Link> clicks and skips the browser's native hash scroll).
@@ -46,7 +52,7 @@ export function TopNav() {
               <Radio size={18} className="text-dark-blue" />
             </span>
             <span className="text-lg font-semibold tracking-tight">
-              Solace <span className="text-bright-green">Lander</span>
+              Solace <span className="text-white">Lander</span>
             </span>
           </Link>
 
@@ -65,7 +71,7 @@ export function TopNav() {
             {user?.role === "admin" && (
               <Link
                 href="/admin"
-                className="text-sm font-semibold text-bright-green transition hover:brightness-110"
+                className="text-sm font-semibold text-white transition hover:brightness-110"
               >
                 Admin
               </Link>
@@ -82,7 +88,7 @@ export function TopNav() {
               Try It Free
             </a>
 
-            {user ? (
+            {user && (
               <div className="relative">
                 <button
                   onClick={() => setMenuOpen((o) => !o)}
@@ -112,13 +118,6 @@ export function TopNav() {
                   </div>
                 )}
               </div>
-            ) : (
-              <button
-                onClick={() => setLoginOpen(true)}
-                className="rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
-              >
-                Login
-              </button>
             )}
 
             {/* Hamburger — mobile only */}
@@ -152,7 +151,7 @@ export function TopNav() {
                   <Link
                     href="/admin"
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-lg px-3 py-3 font-semibold text-bright-green transition hover:bg-white/10"
+                    className="rounded-lg px-3 py-3 font-semibold text-white transition hover:bg-white/10"
                   >
                     Admin
                   </Link>
@@ -172,7 +171,7 @@ export function TopNav() {
         )}
       </header>
 
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+      <LoginModal open={loginOpen} onClose={closeLogin} />
     </>
   );
 }

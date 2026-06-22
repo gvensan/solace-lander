@@ -35,7 +35,7 @@ export default function LearningPathPage() {
         {/* Hero */}
         <section className="bg-solace-blue text-white">
           <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
-            <Link href="/#training" className="mono-label inline-flex items-center gap-1 text-bright-green hover:underline">
+            <Link href="/#training" className="mono-label inline-flex items-center gap-1 text-white/80 hover:text-white hover:underline">
               <ArrowLeft size={14} /> Back to Training
             </Link>
             <p className="overline mt-4 text-eyebrow">Solace Academy</p>

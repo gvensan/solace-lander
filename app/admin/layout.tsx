@@ -22,7 +22,7 @@ const ADMIN_NAV = [
   { href: "/admin/workshops", label: "Workshops", icon: GraduationCap },
   { href: "/admin/pillars", label: "Focus Areas", icon: Layers },
   { href: "/admin/groups", label: "Groups", icon: Tags },
-  { href: "/admin/library", label: "Library", icon: BookOpen },
+  { href: "/admin/library", label: "Blog", icon: BookOpen },
   { href: "/admin/courses", label: "Academy Courses", icon: BookMarked },
   { href: "/admin/learning-paths", label: "Learning Paths", icon: Route },
   { href: "/admin/events", label: "Webinars & Workshops", icon: CalendarDays },

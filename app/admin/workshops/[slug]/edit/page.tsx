@@ -16,7 +16,7 @@ export default async function EditWorkshop({
 
   return (
     <div>
-      <p className="overline text-classic-green">Workshops</p>
+      <p className="overline text-deep-blue">Workshops</p>
       <h1 className="mt-1 mb-8 text-3xl text-deep-blue">Edit Workshop</h1>
       <WorkshopForm workshop={workshop} action={saveWorkshop.bind(null, slug)} />
     </div>

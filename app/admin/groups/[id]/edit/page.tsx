@@ -12,7 +12,7 @@ export default async function EditGroup({ params }: { params: Promise<{ id: stri
 
   return (
     <div>
-      <p className="overline text-classic-green">Reference Groups</p>
+      <p className="overline text-deep-blue">Reference Groups</p>
       <h1 className="mt-1 mb-8 text-3xl text-deep-blue">Edit Group</h1>
       <GroupForm group={group} action={saveGroup.bind(null, id)} />
     </div>

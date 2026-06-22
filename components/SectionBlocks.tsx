@@ -25,12 +25,12 @@ function formatDate(iso: string) {
   });
 }
 
-// Library by resource type (mirrors solace.com): each category shows its 2 latest
-// items + a "More" link to the solace.com page. Empty categories are skipped.
+// Library — Blog only for now: shows the latest 4 posts + a "More" link to the blog.
+// Empty categories are skipped.
 export function LibraryBlock() {
   const sections = LIBRARY_CATEGORIES.map((cat) => ({
     cat,
-    items: getLibraryByCategory(cat.id, 2),
+    items: getLibraryByCategory(cat.id, 4),
   })).filter((s) => s.items.length > 0);
 
   return (
@@ -46,7 +46,7 @@ export function LibraryBlock() {
               href={categoryMoreUrl(cat)}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-sm font-semibold text-classic-green hover:underline"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-deep-blue hover:underline"
             >
               More <ArrowUpRight size={14} />
             </a>
@@ -75,7 +75,7 @@ export function LibraryBlock() {
         </div>
       ))}
 
-      {/* Full Resource Library CTA */}
+      {/* Resource Library CTA */}
       <div className="pt-2 text-center">
         <a
           href="https://solace.com/resources/home/?page=1"
@@ -83,7 +83,7 @@ export function LibraryBlock() {
           rel="noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-solace-green px-7 py-3 font-semibold text-dark-blue transition hover:brightness-105"
         >
-          Resource Library <ArrowUpRight size={18} />
+          Explore Resources Library <ArrowUpRight size={18} />
         </a>
       </div>
     </div>
@@ -156,7 +156,7 @@ export function CommunityBlock() {
         />
         <div className="flex flex-wrap items-start justify-between gap-5 lg:pr-48">
           <div className="max-w-2xl">
-            <p className="overline text-classic-green">Solace Community</p>
+            <p className="overline text-deep-blue">Solace Community</p>
             <h3 className="mt-1 text-xl text-deep-blue">Have a Question? The Community Has Answers</h3>
             <p className="mt-2 text-sm text-deep-blue/75">
               The Solace Community is where thousands of developers and architects ask questions,
@@ -256,7 +256,7 @@ export function EventsBlock() {
             href={evt.registerUrl}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-classic-green px-4 py-2 text-sm font-semibold text-classic-green transition hover:bg-classic-green/10"
+            className="rounded-full border border-deep-blue px-4 py-2 text-sm font-semibold text-deep-blue transition hover:bg-deep-blue hover:text-white"
           >
             Register
           </a>

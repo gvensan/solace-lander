@@ -15,7 +15,7 @@ export async function register() {
   const run = async () => {
     try {
       const r = await ingestAll();
-      console.log(`[cron] ingest ok — blog:${r.blog} video:${r.video} resources:${r.resources} wws:${r.events} workshops:${r.workshops} events:${r.marketingEvents} academy:${r.academy}`);
+      console.log(`[cron] ingest ok — blog:${r.blog} wws:${r.events} workshops:${r.workshops} events:${r.marketingEvents} academy:${r.academy}`);
     } catch (e) {
       console.error("[cron] ingest failed:", e);
     }

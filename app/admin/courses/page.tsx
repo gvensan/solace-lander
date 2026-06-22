@@ -24,7 +24,7 @@ export default function AdminCourses() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="overline text-classic-green">Solace Academy</p>
+          <p className="overline text-deep-blue">Solace Academy</p>
           <h1 className="mt-1 text-3xl text-deep-blue">Courses & Cert Paths</h1>
           <p className="mt-1 text-sm text-deep-blue/60">
             Read-only mirror of the public training.solace.com catalog · synced daily · last sync {lastSynced}
@@ -59,7 +59,7 @@ export default function AdminCourses() {
       {/* New / unreviewed items — always shown, at the top, before the listings */}
       <div className="mt-8 rounded-2xl border border-classic-green/40 bg-classic-green/[0.05] p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="overline flex items-center gap-2 text-classic-green">
+          <p className="overline flex items-center gap-2 text-deep-blue">
             <Sparkles size={14} /> New &amp; unreviewed{newItems.length > 0 ? ` · ${newItems.length}` : ""}
           </p>
           {newItems.length > 0 && (

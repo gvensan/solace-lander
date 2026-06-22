@@ -76,7 +76,7 @@ export function Footer() {
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {COLUMNS.map((col) => (
             <div key={col.title} className="rounded-2xl bg-deep-blue/50 p-6">
-              <p className="font-body text-lg font-semibold text-classic-green">{col.title}</p>
+              <p className="font-body text-lg font-semibold text-white">{col.title}</p>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>

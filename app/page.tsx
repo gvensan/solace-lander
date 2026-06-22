@@ -55,8 +55,8 @@ export default async function Home() {
           <section id="library">
             <SectionHeading
               overline="Library"
-              title="Latest in Resource Library"
-              subtitle="The newest from solace.com — by resource type."
+              title="Latest from the Blog"
+              subtitle="The newest posts from the Solace blog."
             />
             <LibraryBlock />
           </section>

@@ -67,14 +67,14 @@ export function PillarDetail({
       {pillar.latestPosts && pillar.latestPosts.length > 0 && (
         <div className="mt-6 rounded-xl border border-classic-green/25 bg-classic-green/[0.06] p-4">
           <div className="mb-2 flex items-center justify-between">
-            <p className="overline flex items-center gap-1.5 text-classic-green">
+            <p className="overline flex items-center gap-1.5 text-deep-blue">
               <Rss size={12} /> Latest from the Blog
             </p>
             <a
               href="https://solace.com/blog/"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-classic-green hover:underline"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-deep-blue hover:underline"
             >
               More <ArrowUpRight size={12} />
             </a>

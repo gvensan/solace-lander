@@ -39,7 +39,7 @@ function Detail({ item, onClose }: { item: AcademyItem; onClose: () => void }) {
   return (
     <div className="border-t border-classic-green/30 bg-cool-12/50 p-5">
       <div className="flex items-start justify-between gap-3">
-        <p className="overline text-classic-green">{item.type === "learning_plan" ? "Path details" : "Course details"}</p>
+        <p className="overline text-deep-blue">{item.type === "learning_plan" ? "Path details" : "Course details"}</p>
         <button onClick={onClose} className="grid h-7 w-7 place-items-center rounded-lg text-deep-blue/50 transition hover:bg-cool-13 hover:text-deep-blue" aria-label="Close details">
           <X size={15} />
         </button>
@@ -71,7 +71,7 @@ function Detail({ item, onClose }: { item: AcademyItem; onClose: () => void }) {
         </div>
       )}
 
-      <a href={item.url} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-classic-green hover:underline">
+      <a href={item.url} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-deep-blue hover:underline">
         Open in Solace Academy <ExternalLink size={14} />
       </a>
     </div>

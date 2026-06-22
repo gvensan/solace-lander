@@ -22,11 +22,11 @@ function eventToWorkshop(e: SolaceEvent): Workshop {
   };
 }
 
-// Pulls fresh Blog + Videos from solace.com's WordPress API and clean-updates the DB.
+// Pulls fresh Blog posts from solace.com's WordPress API and clean-updates the DB.
 // Used by the /admin "Sync now" button and the periodic cron (instrumentation.ts).
+// (Videos + Resources/whitepapers are intentionally not ingested — Blog only for now.)
 
 const WP = "https://solace.com/wp-json/wp/v2";
-const VIDEOS_CATEGORY = 115;
 
 function clean(html: string, max = 180): string {
   const text = html
@@ -76,43 +76,6 @@ function toItem(p: WpPost, category: string): LibraryItem {
     source: "auto",
     topics: p.categories ?? [],
   };
-}
-
-// Resources (whitepapers/guides) come from the WP RSS feed for the `resource` post type
-// (it has no REST endpoint). Parse the RSS without an XML dependency.
-function rssTag(item: string, tag: string): string {
-  const m = item.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`));
-  if (!m) return "";
-  return m[1].replace(/^<!\[CDATA\[/, "").replace(/\]\]>$/, "").trim();
-}
-
-function rfcToISO(d: string): string {
-  const t = Date.parse(d);
-  return Number.isNaN(t) ? "" : new Date(t).toISOString().slice(0, 10);
-}
-
-async function fetchResources(limit: number): Promise<LibraryItem[]> {
-  const res = await fetch("https://solace.com/feed/?post_type=resource", {
-    headers: { "User-Agent": "SolaceLander/1.0" },
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`resource feed ${res.status}`);
-  const xml = await res.text();
-  const items = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/g)].slice(0, limit);
-  return items.map((m) => {
-    const it = m[1];
-    const url = rssTag(it, "link");
-    return {
-      id: `res-${(url.replace(/\/+$/, "").split("/").pop() || "item").slice(0, 60)}`,
-      category: "resources",
-      title: clean(rssTag(it, "title"), 120),
-      description: "",
-      url,
-      date: rfcToISO(rssTag(it, "pubDate")),
-      source: "auto" as const,
-      topics: [],
-    };
-  });
 }
 
 interface WwsEvent {
@@ -213,8 +176,6 @@ async function fetchTribeEvents(limit: number): Promise<SolaceEvent[]> {
 
 export async function ingestAll(): Promise<{
   blog: number;
-  video: number;
-  resources: number;
   events: number;
   workshops: number;
   marketingEvents: number;
@@ -222,39 +183,19 @@ export async function ingestAll(): Promise<{
   at: string;
 }> {
   let blog = 0;
-  let video = 0;
-  let resources = 0;
   let events = 0;
   let workshops = 0;
   let marketingEvents = 0;
   let academy = 0;
 
-  // Blog + Videos via the WordPress API (fast, dated; powers pillar "latest posts").
+  // Blog (latest 4) via the WordPress API — the only Library category for now.
   try {
-    const posts = await fetchPosts("per_page=6&orderby=date&order=desc");
+    const posts = await fetchPosts("per_page=4&orderby=date&order=desc");
     const items = posts.map((p) => toItem(p, "blog"));
     replaceAutoCategory("blog", items);
     blog = items.length;
   } catch (e) {
     console.error("[ingest] blog failed:", e);
-  }
-
-  try {
-    const posts = await fetchPosts(`categories=${VIDEOS_CATEGORY}&per_page=4&orderby=date&order=desc`);
-    const items = posts.map((p) => toItem(p, "video"));
-    replaceAutoCategory("video", items);
-    video = items.length;
-  } catch (e) {
-    console.error("[ingest] video failed:", e);
-  }
-
-  // Resources (whitepapers/guides) via the WP RSS feed for the `resource` post type.
-  try {
-    const items = await fetchResources(6);
-    replaceAutoCategory("resources", items);
-    resources = items.length;
-  } catch (e) {
-    console.error("[ingest] resources failed:", e);
   }
 
   // Upcoming webinars & workshops from events.solace.com; prunes expired.
@@ -288,5 +229,5 @@ export async function ingestAll(): Promise<{
     console.error("[ingest] academy failed:", e);
   }
 
-  return { blog, video, resources, events, workshops, marketingEvents, academy, at: new Date().toISOString() };
+  return { blog, events, workshops, marketingEvents, academy, at: new Date().toISOString() };
 }

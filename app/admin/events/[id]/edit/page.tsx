@@ -12,7 +12,7 @@ export default async function EditEvent({ params }: { params: Promise<{ id: stri
 
   return (
     <div>
-      <p className="overline text-classic-green">Events</p>
+      <p className="overline text-deep-blue">Events</p>
       <h1 className="mt-1 mb-8 text-3xl text-deep-blue">Edit Event</h1>
       <EventForm event={event} action={saveEvent.bind(null, id)} />
     </div>

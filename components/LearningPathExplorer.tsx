@@ -10,7 +10,7 @@ type Course = PathCourse;
 
 // Stage → accent classes (matches the 🟢🔵🟠 coding in the source).
 const STAGE = {
-  1: { dot: "bg-classic-green", line: "border-classic-green", label: "text-classic-green" },
+  1: { dot: "bg-classic-green", line: "border-classic-green", label: "text-deep-blue" },
   2: { dot: "bg-deep-blue", line: "border-deep-blue/50", label: "text-deep-blue" },
   3: { dot: "bg-orange", line: "border-orange/60", label: "text-orange" },
 } as const;
@@ -54,7 +54,7 @@ function StepNode({ node, stage, pathUrl }: { node: Course; stage: Stage; pathUr
           <Award size={15} />
         </span>
         <a href={href} target="_blank" rel="noreferrer" className="group block rounded-xl border-2 border-classic-green bg-classic-green/[0.07] p-4 transition hover:bg-classic-green/[0.12]">
-          <p className="overline text-classic-green">Certification</p>
+          <p className="overline text-deep-blue">Certification</p>
           <h4 className="mt-0.5 text-base text-deep-blue group-hover:text-classic-green">{node.title}</h4>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <Chip className="bg-white text-deep-blue/70"><Clock size={11} /> {node.duration}</Chip>
@@ -114,7 +114,7 @@ function Catalog({ catalog }: { catalog: CatalogCourse[] }) {
 
   return (
     <div className="mt-14 border-t border-cool-13 pt-10">
-      <p className="overline text-classic-green">Course catalog</p>
+      <p className="overline text-deep-blue">Course catalog</p>
       <div className="mt-1 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h3 className="text-2xl text-deep-blue">Explore every course</h3>
@@ -196,7 +196,7 @@ export function LearningPathExplorer({
   return (
     <div>
       {/* Role selector */}
-      <p className="overline text-classic-green">Choose your role</p>
+      <p className="overline text-deep-blue">Choose your role</p>
       <div className="mt-3 flex flex-wrap gap-2">
         {roles.map((r) => {
           const active = r.id === roleId;
@@ -223,15 +223,15 @@ export function LearningPathExplorer({
         </div>
         <div className="flex gap-6">
           <div>
-            <p className="text-2xl font-semibold text-bright-green">{role.time}</p>
+            <p className="text-2xl font-semibold text-white">{role.time}</p>
             <p className="mono-label text-white/60">total time</p>
           </div>
           <div>
-            <p className="text-2xl font-semibold text-bright-green">{priceLabel(role.cost)}</p>
+            <p className="text-2xl font-semibold text-white">{priceLabel(role.cost)}</p>
             <p className="mono-label text-white/60">cost</p>
           </div>
           <div>
-            <p className="text-2xl font-semibold text-bright-green">{certCount}</p>
+            <p className="text-2xl font-semibold text-white">{certCount}</p>
             <p className="mono-label text-white/60">{certCount === 1 ? "certification" : "certifications"}</p>
           </div>
         </div>
@@ -248,7 +248,7 @@ export function LearningPathExplorer({
                 <p className={`overline ${s.label}`}>Stage {band.stage} · {band.title}</p>
                 {band.totalTime && <span className="mono-label text-deep-blue/40">{band.totalTime} · {priceLabel(band.cost ?? "FREE")}</span>}
                 {band.pathUrl && (
-                  <a href={band.pathUrl} target="_blank" rel="noreferrer" className="mono-label inline-flex items-center gap-1 text-classic-green hover:underline">
+                  <a href={band.pathUrl} target="_blank" rel="noreferrer" className="mono-label inline-flex items-center gap-1 text-deep-blue hover:underline">
                     full path <ExternalLink size={11} />
                   </a>
                 )}

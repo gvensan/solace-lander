@@ -13,10 +13,10 @@ export default function AdminLibrary() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="overline text-classic-green">Content</p>
-          <h1 className="mt-1 text-3xl text-deep-blue">Library</h1>
+          <p className="overline text-deep-blue">Content</p>
+          <h1 className="mt-1 text-3xl text-deep-blue">Blog</h1>
           <p className="mt-1 text-sm text-deep-blue/60">
-            Blog & Videos auto-sync from solace.com; the rest are curated here.
+            Latest blog posts auto-sync from solace.com (last 4). Manual entries can be added too.
           </p>
         </div>
         <div className="flex items-center gap-3">

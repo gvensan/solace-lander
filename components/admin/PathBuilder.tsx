@@ -37,7 +37,7 @@ export function PathBuilder({ roles, rolePaths, catalog }: { roles: Role[]; role
   return (
     <div className={pending ? "opacity-70 transition" : "transition"}>
       {/* Role selector */}
-      <p className="overline text-classic-green">Choose a role to edit</p>
+      <p className="overline text-deep-blue">Choose a role to edit</p>
       <div className="mt-3 flex flex-wrap gap-2">
         {roles.map((r) => {
           const active = r.id === roleId;
@@ -69,7 +69,7 @@ export function PathBuilder({ roles, rolePaths, catalog }: { roles: Role[]; role
               />
               {band.totalTime && <span className="mono-label text-deep-blue/40">{band.totalTime}</span>}
               {band.pathUrl && (
-                <a href={band.pathUrl} target="_blank" rel="noreferrer" className="mono-label inline-flex items-center gap-1 text-classic-green hover:underline">official path <ExternalLink size={11} /></a>
+                <a href={band.pathUrl} target="_blank" rel="noreferrer" className="mono-label inline-flex items-center gap-1 text-deep-blue hover:underline">official path <ExternalLink size={11} /></a>
               )}
               <span className="ml-auto flex items-center gap-1">
                 <button onClick={() => act(() => pbMoveBand(band.id, "up"))} disabled={bi === 0 || pending} className="grid h-7 w-7 place-items-center rounded-lg text-deep-blue/40 hover:bg-cool-12 hover:text-classic-green disabled:opacity-30" aria-label="Move stage up"><ChevronUp size={15} /></button>
@@ -105,7 +105,7 @@ export function PathBuilder({ roles, rolePaths, catalog }: { roles: Role[]; role
 
       {/* Add a stage */}
       <div className="mt-8 rounded-2xl border border-cool-13 bg-white p-5">
-        <p className="overline flex items-center gap-2 text-classic-green"><Layers size={14} /> Add a stage</p>
+        <p className="overline flex items-center gap-2 text-deep-blue"><Layers size={14} /> Add a stage</p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <input
             value={stageTitle}
@@ -130,7 +130,7 @@ export function PathBuilder({ roles, rolePaths, catalog }: { roles: Role[]; role
 
       {/* Add a course */}
       <div className="mt-6 rounded-2xl border border-classic-green/40 bg-classic-green/[0.05] p-5">
-        <p className="overline flex items-center gap-2 text-classic-green"><Plus size={14} /> Add a course</p>
+        <p className="overline flex items-center gap-2 text-deep-blue"><Plus size={14} /> Add a course</p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <label className="mono-label text-deep-blue/50">to stage</label>
           <select

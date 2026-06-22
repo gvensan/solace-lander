@@ -40,7 +40,7 @@ export function SectionNav({ sections }: { sections: SectionItem[] }) {
                 href={`#${s.id}`}
                 className={`-ml-px flex items-center gap-2 border-l-2 py-1.5 pl-4 text-sm transition ${
                   isActive
-                    ? "border-classic-green font-semibold text-classic-green"
+                    ? "border-deep-blue font-semibold text-deep-blue"
                     : "border-transparent text-deep-blue/60 hover:border-cool-14 hover:text-deep-blue"
                 }`}
               >

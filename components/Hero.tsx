@@ -78,7 +78,7 @@ function RecordingCard({ workshop }: { workshop: Workshop }) {
           <Calendar size={13} /> {formatDate(workshop.date)}
         </p>
         <h3 className="mt-1 text-xl text-white">{workshop.title}</h3>
-        <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-bright-green">
+        <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-white">
           Watch replay <ArrowRight size={15} className="transition group-hover:translate-x-0.5" />
         </span>
       </div>
@@ -96,7 +96,7 @@ function GenericHero({ loggedIn }: { loggedIn: boolean }) {
       <BubbleCluster color="#00C895" className="absolute bottom-8 left-1/3 h-24 w-24 opacity-70" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-14 text-center sm:px-6 sm:py-20 lg:px-8">
-        <p className="overline text-classic-green">Solace Lander</p>
+        <p className="overline text-deep-blue">Solace Lander</p>
         <h1 className="mx-auto mt-3 max-w-4xl text-4xl leading-[1.05] text-deep-blue sm:text-5xl lg:text-6xl">
           Everything From the Workshop, in One Place
         </h1>

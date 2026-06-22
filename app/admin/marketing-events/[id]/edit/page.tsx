@@ -12,7 +12,7 @@ export default async function EditMarketingEvent({ params }: { params: Promise<{
 
   return (
     <div>
-      <p className="overline text-classic-green">Events</p>
+      <p className="overline text-deep-blue">Events</p>
       <h1 className="mt-1 mb-8 text-3xl text-deep-blue">Edit Event</h1>
       <EventForm event={event} action={saveMarketingEvent.bind(null, id)} backHref="/admin/marketing-events" />
     </div>

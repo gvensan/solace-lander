@@ -27,7 +27,7 @@ export default function AdminDashboard() {
     { href: "/admin/workshops", label: "Workshops", value: getWorkshops().length, icon: GraduationCap, sub: "Replays, attendees, links" },
     { href: "/admin/pillars", label: "Focus Areas", value: getPillars().length, icon: Layers, sub: "Topics & references" },
     { href: "/admin/groups", label: "Groups", value: getGroups().length, icon: Tags, sub: "Reference categories" },
-    { href: "/admin/library", label: "Library", value: getLibraryItems().length, icon: BookOpen, sub: "Videos & blogs" },
+    { href: "/admin/library", label: "Blog", value: getLibraryItems().length, icon: BookOpen, sub: "Latest blog posts" },
     { href: "/admin/courses", label: "Academy Courses", value: academy.courses + academy.paths, icon: BookMarked, sub: `Synced catalog${academy.newItems ? ` · ${academy.newItems} new` : ""}` },
     { href: "/admin/learning-paths", label: "Learning Paths", value: ROLES.length, icon: Route, sub: "Per-role course sequences" },
     { href: "/admin/events", label: "Webinars & Workshops", value: getEvents().length, icon: CalendarDays, sub: "Synced from events.solace.com" },
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <p className="overline text-classic-green">Content Management</p>
+      <p className="overline text-deep-blue">Content Management</p>
       <h1 className="mt-1 text-3xl text-deep-blue">Dashboard</h1>
       <p className="mt-2 text-deep-blue/70">Manage the content that powers the Solace Lander hub.</p>
 
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
             </div>
             <h2 className="mt-3 text-lg text-deep-blue">{label}</h2>
             <p className="text-sm text-deep-blue/60">{sub}</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-classic-green">
+            <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-deep-blue">
               Manage <ArrowRight size={14} className="transition group-hover:translate-x-0.5" />
             </span>
           </Link>

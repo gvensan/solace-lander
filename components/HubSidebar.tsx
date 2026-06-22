@@ -25,7 +25,7 @@ function VideoTiles({ videos }: { videos: Video[] }) {
   if (videos.length === 0) return null;
   return (
     <div className="rounded-2xl border border-cool-13 bg-white p-5">
-      <p className="overline flex items-center gap-2 text-classic-green">
+      <p className="overline flex items-center gap-2 text-deep-blue">
         <VideoIcon size={14} /> Latest Videos
       </p>
       <div className="mt-3 space-y-4">
@@ -55,7 +55,7 @@ function VideoTiles({ videos }: { videos: Video[] }) {
         href={CHANNEL_VIDEOS_URL}
         target="_blank"
         rel="noreferrer"
-        className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-classic-green hover:underline"
+        className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-deep-blue hover:underline"
       >
         More Videos <ArrowUpRight size={14} />
       </a>
@@ -82,7 +82,7 @@ function DefaultTiles({ events, videos }: { events: SolaceEvent[]; videos: Video
           Talk to a Solace Developer Advocate to sharpen your understanding of event-driven
           architecture, event brokers, event mesh, and integration.
         </p>
-        <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-bright-green">
+        <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-white">
           Engage now <ArrowUpRight size={14} className="transition group-hover:translate-x-0.5" />
         </span>
       </a>
@@ -96,7 +96,7 @@ function DefaultTiles({ events, videos }: { events: SolaceEvent[]; videos: Video
           rel="noreferrer"
           className="group block rounded-2xl border border-cool-13 bg-white p-5 transition hover:border-classic-green hover:shadow-md"
         >
-          <p className="overline flex items-center gap-2 text-classic-green">
+          <p className="overline flex items-center gap-2 text-deep-blue">
             <CalendarDays size={14} /> {evt.type}
           </p>
           <h3 className="mt-2 text-base leading-snug text-deep-blue group-hover:text-classic-green">
@@ -145,7 +145,7 @@ export function HubSidebar({
           <Icon name={selectedPillar.icon} size={20} className="text-dark-blue" />
         </div>
         <div>
-          <p className="overline text-classic-green">Focus Area {selectedPillar.number}</p>
+          <p className="overline text-deep-blue">Focus Area {selectedPillar.number}</p>
           <h3 className="text-xl leading-tight text-deep-blue">{selectedPillar.title}</h3>
         </div>
       </div>

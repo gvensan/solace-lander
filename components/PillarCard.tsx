@@ -29,7 +29,7 @@ export function PillarCard({
       >
         <Icon name={pillar.icon} size={22} className={active ? "text-dark-blue" : "text-deep-blue"} />
       </div>
-      <p className={`overline mt-4 ${active ? "text-bright-green" : "text-classic-green"}`}>
+      <p className="overline mt-4 text-deep-blue">
         Focus Area {pillar.number}
       </p>
       <h3 className={`mt-1 text-xl ${active ? "text-white" : "text-deep-blue"}`}>{pillar.title}</h3>

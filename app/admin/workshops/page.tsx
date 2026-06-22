@@ -13,7 +13,7 @@ export default function AdminWorkshops() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <p className="overline text-classic-green">Content</p>
+          <p className="overline text-deep-blue">Content</p>
           <h1 className="mt-1 text-3xl text-deep-blue">Workshops</h1>
           <p className="mt-1 max-w-xl text-sm text-deep-blue/60">
             Synced from the events.solace.com feed on each cron / Sync. Editing a synced

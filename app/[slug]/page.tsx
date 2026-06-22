@@ -88,7 +88,7 @@ export default async function WorkshopPage({
       {/* Workshop header strip */}
       <div className="bg-solace-blue text-white">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <Link href="/#catalog" className="mono-label text-bright-green hover:underline">
+          <Link href="/#catalog" className="mono-label text-white/80 hover:text-white hover:underline">
             ← All workshops
           </Link>
           <h1 className="mt-2 max-w-3xl text-3xl sm:text-4xl">{workshop.title}</h1>
@@ -128,7 +128,7 @@ export default async function WorkshopPage({
             </section>
 
             <section id="library">
-              <SectionHeading overline="Section 3" title="Library" />
+              <SectionHeading overline="Section 3" title="Latest from the Blog" />
               <LibraryBlock />
             </section>
 
@@ -151,7 +151,7 @@ export default async function WorkshopPage({
           <aside className="hidden xl:col-span-3 xl:block">
             <div className="sticky top-24 space-y-4">
               <div className="rounded-2xl border border-cool-13 bg-white p-5">
-                <p className="overline text-classic-green">This Workshop</p>
+                <p className="overline text-deep-blue">This Workshop</p>
                 <h3 className="mt-1 text-lg leading-snug text-deep-blue">{workshop.title}</h3>
                 <p className="mt-1 flex items-center gap-1.5 text-sm text-deep-blue/60">
                   <Calendar size={14} /> {formatDate(workshop.date)}

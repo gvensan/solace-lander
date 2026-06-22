@@ -1,29 +1,23 @@
-// Library resource categories — all sourced from solace.com's WordPress feeds, so a
-// single Sync (button or cron) repopulates every category with the latest items.
-//   blog      → /wp/v2/posts
-//   video     → /wp/v2/posts?categories=115
-//   resources → /feed/?post_type=resource  (whitepapers/guides; mixed — solace.com
-//               exposes no per-type API/feed, so these can't be split by type)
-// `contentType` builds the "More" link (type-filtered solace.com URL; "" = all).
+// Library resource categories. Blog only for now — sourced from solace.com's WordPress
+// REST API (/wp/v2/posts), so a single Sync (button or cron) repopulates it with the
+// latest posts. Videos + Resources/whitepapers are intentionally omitted for now.
+// `moreUrl` is the "More" link target (canonical solace.com index for the type).
 export interface LibraryCategory {
   id: string;
   label: string;
   icon: string; // lucide icon name (see components/Icon.tsx)
-  contentType: string;
+  moreUrl: string;
 }
 
 export const LIBRARY_CATEGORIES: LibraryCategory[] = [
-  { id: "blog", label: "Blog", icon: "FileText", contentType: "Blog Post" },
-  { id: "video", label: "Videos", icon: "PlayCircle", contentType: "Video" },
-  { id: "resources", label: "Whitepapers & Guides", icon: "ScrollText", contentType: "" },
+  { id: "blog", label: "Blog", icon: "FileText", moreUrl: "https://solace.com/blog/" },
 ];
 
 export function libraryCategory(id: string): LibraryCategory | undefined {
   return LIBRARY_CATEGORIES.find((c) => c.id === id);
 }
 
-// Constructed solace.com Resource Library URL (the "More" link), type-filtered when set.
+// The "More" link target for a category (canonical solace.com index).
 export function categoryMoreUrl(cat: LibraryCategory): string {
-  const base = "https://solace.com/resources/home/?page=1";
-  return cat.contentType ? `${base}&content_types=${cat.contentType.replace(/ /g, "+")}` : base;
+  return cat.moreUrl;
 }

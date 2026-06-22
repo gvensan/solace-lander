@@ -10,7 +10,7 @@ export function SectionHeading({
 }) {
   return (
     <div className="mb-6">
-      <p className="overline text-classic-green">{overline}</p>
+      <p className="overline text-deep-blue">{overline}</p>
       <h2 className="mt-1 text-3xl text-deep-blue">{title}</h2>
       {subtitle && <p className="mt-2 max-w-2xl text-deep-blue/70">{subtitle}</p>}
     </div>

@@ -13,7 +13,7 @@ export default function AdminEvents() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="overline text-classic-green">Content</p>
+          <p className="overline text-deep-blue">Content</p>
           <h1 className="mt-1 text-3xl text-deep-blue">Webinars &amp; Workshops</h1>
           <p className="mt-1 text-sm text-deep-blue/60">
             Upcoming webinars &amp; workshops sync from events.solace.com; expired ones are pruned automatically.
