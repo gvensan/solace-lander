@@ -259,3 +259,11 @@ export function getDb(): Database.Database {
   if (!globalThis.__landerDb) globalThis.__landerDb = create();
   return globalThis.__landerDb;
 }
+
+// Fold the WAL fully into the main lander.db file. Called after a sync so that, in
+// local dev, the committed-and-deployed data/lander.db is always self-complete — the
+// transient -wal/-shm sidecars are gitignored and never bundled to production, so any
+// rows left in the WAL would otherwise ship stale. Harmless in prod (acts on /tmp).
+export function checkpointDb(): void {
+  getDb().pragma("wal_checkpoint(TRUNCATE)");
+}

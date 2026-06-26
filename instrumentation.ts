@@ -1,9 +1,20 @@
-// Periodic content ingest (cron). Runs in the Node.js server runtime: an initial
-// sync shortly after startup, then every INGEST_INTERVAL_MINUTES (default 6h).
-// For serverless/edge hosting, point a platform scheduler at POST /api/admin/sync
-// with the CRON_SECRET header instead — this in-process timer is for self-hosted/dev.
+// Periodic content ingest (cron) — LOCAL/SELF-HOSTED ONLY. Runs an initial sync shortly
+// after startup, then every INGEST_INTERVAL_MINUTES (default 6h).
+//
+// Deliberately inert on serverless (Netlify/Lambda): there is no long-lived process, so
+// the interval never fires, and the opportunistic cold-start run would only mutate that
+// instance's ephemeral /tmp DB — producing per-instance content divergence. Production
+// content is refreshed manually: run the dev server locally, hit the admin "Sync now"
+// button (which checkpoints the DB), commit data/lander.db, and redeploy.
 export async function register() {
   if (process.env.NEXT_RUNTIME !== "nodejs") return;
+
+  const serverless = !!(
+    process.env.NETLIFY ||
+    process.env.LAMBDA_TASK_ROOT ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME
+  );
+  if (serverless) return;
 
   const g = globalThis as typeof globalThis & { __landerCron?: boolean };
   if (g.__landerCron) return; // avoid double-scheduling on dev HMR
