@@ -60,11 +60,11 @@ export function LibraryBlock() {
                 rel="noreferrer"
                 className="group flex gap-4 rounded-2xl border border-cool-13 bg-white p-5 transition hover:border-classic-green hover:shadow-md"
               >
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-deep-blue/5 text-deep-blue group-hover:bg-classic-green/10 group-hover:text-classic-green">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-deep-blue/5 text-deep-blue group-hover:bg-classic-green/10">
                   <Icon name={cat.icon} size={20} />
                 </span>
                 <div className="min-w-0">
-                  <h4 className="truncate text-base text-deep-blue group-hover:text-classic-green">
+                  <h4 className="truncate text-base text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2">
                     {item.title}
                   </h4>
                   <p className="mt-0.5 line-clamp-2 text-sm text-deep-blue/70">{item.description}</p>
@@ -139,10 +139,10 @@ export function CommunityBlock() {
           rel="noreferrer"
           className="group rounded-2xl border border-cool-13 bg-white p-5 transition hover:border-classic-green hover:shadow-md"
         >
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-deep-blue/5 text-deep-blue group-hover:bg-classic-green/10 group-hover:text-classic-green">
+          <span className="grid h-11 w-11 place-items-center rounded-xl bg-deep-blue/5 text-deep-blue group-hover:bg-classic-green/10">
             <Icon name={link.icon} size={22} />
           </span>
-          <h3 className="mt-3 text-lg text-deep-blue group-hover:text-classic-green">{link.label}</h3>
+          <h3 className="mt-3 text-lg text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2">{link.label}</h3>
           <p className="mt-1 text-sm text-deep-blue/70">{link.description}</p>
         </a>
       ))}
@@ -237,7 +237,7 @@ export function EventsBlock() {
               className={`mono-label rounded-full px-2.5 py-0.5 text-xs ${
                 /webinar/i.test(evt.type)
                   ? "bg-sky-blue/50 text-deep-blue"
-                  : "bg-bright-green/30 text-dark-green"
+                  : "bg-bright-green/30 text-deep-blue"
               }`}
             >
               {evt.type}

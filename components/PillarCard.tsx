@@ -38,7 +38,7 @@ export function PillarCard({
       </p>
       <span
         className={`mono-label mt-4 inline-flex items-center gap-1 ${
-          active ? "text-bright-green" : "text-deep-blue/50 group-hover:text-classic-green"
+          active ? "text-bright-green" : "text-deep-blue/50 group-hover:text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2"
         }`}
       >
         {active ? "Showing in panel" : "Explore"}

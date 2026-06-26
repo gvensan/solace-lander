@@ -64,7 +64,7 @@ export default function AdminCourses() {
           </p>
           {newItems.length > 0 && (
             <form action={reviewAllCourses}>
-              <button type="submit" className="mono-label rounded-full border border-classic-green/50 px-3 py-1 text-classic-green transition hover:bg-classic-green/10">
+              <button type="submit" className="mono-label rounded-full border border-classic-green/50 px-3 py-1 text-deep-blue transition hover:bg-classic-green/10">
                 Mark all reviewed
               </button>
             </form>

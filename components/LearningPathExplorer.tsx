@@ -12,7 +12,7 @@ type Course = PathCourse;
 const STAGE = {
   1: { dot: "bg-classic-green", line: "border-classic-green", label: "text-deep-blue" },
   2: { dot: "bg-deep-blue", line: "border-deep-blue/50", label: "text-deep-blue" },
-  3: { dot: "bg-orange", line: "border-orange/60", label: "text-orange" },
+  3: { dot: "bg-orange", line: "border-orange/60", label: "text-deep-blue" },
 } as const;
 
 const isPaid = (price: string) => price !== "FREE";
@@ -36,7 +36,7 @@ function Chip({ children, className }: { children: React.ReactNode; className: s
 
 function PriceChip({ price }: { price: string }) {
   return (
-    <Chip className={isPaid(price) ? "bg-orange/15 text-orange" : "bg-classic-green/15 text-dark-green"}>
+    <Chip className={isPaid(price) ? "bg-orange/15 text-deep-blue" : "bg-classic-green/15 text-deep-blue"}>
       {priceLabel(price)}
     </Chip>
   );
@@ -55,7 +55,7 @@ function StepNode({ node, stage, pathUrl }: { node: Course; stage: Stage; pathUr
         </span>
         <a href={href} target="_blank" rel="noreferrer" className="group block rounded-xl border-2 border-classic-green bg-classic-green/[0.07] p-4 transition hover:bg-classic-green/[0.12]">
           <p className="overline text-deep-blue">Certification</p>
-          <h4 className="mt-0.5 text-base text-deep-blue group-hover:text-classic-green">{node.title}</h4>
+          <h4 className="mt-0.5 text-base text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2">{node.title}</h4>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <Chip className="bg-white text-deep-blue/70"><Clock size={11} /> {node.duration}</Chip>
             <PriceChip price={node.price} />
@@ -83,7 +83,7 @@ function StepNode({ node, stage, pathUrl }: { node: Course; stage: Stage; pathUr
         }`}
       >
         <div className="min-w-0">
-          <h4 className="text-[0.95rem] leading-snug text-deep-blue group-hover:text-classic-green">{node.title}</h4>
+          <h4 className="text-[0.95rem] leading-snug text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2">{node.title}</h4>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             {elective && <Chip className="bg-deep-blue/5 text-deep-blue/55">Optional</Chip>}
             <Chip className="bg-cool-12 text-deep-blue/60"><Clock size={11} /> {node.duration}</Chip>
@@ -92,7 +92,7 @@ function StepNode({ node, stage, pathUrl }: { node: Course; stage: Stage; pathUr
             {within && <Chip className="bg-deep-blue/5 text-deep-blue/50">in path</Chip>}
           </div>
         </div>
-        <ArrowUpRight size={16} className="mt-1 shrink-0 text-deep-blue/30 transition group-hover:text-classic-green" />
+        <ArrowUpRight size={16} className="mt-1 shrink-0 text-deep-blue/30 transition group-hover:text-deep-blue" />
       </a>
     </li>
   );
@@ -163,7 +163,7 @@ function Catalog({ catalog }: { catalog: CatalogCourse[] }) {
               <div className="grid gap-2 sm:grid-cols-2">
                 {rows.map((c) => (
                   <a key={c.url} href={c.url} target="_blank" rel="noreferrer" className="group flex items-center justify-between gap-3 rounded-lg border border-cool-13 bg-white px-4 py-2.5 transition hover:border-classic-green hover:shadow-sm">
-                    <span className="min-w-0 truncate text-sm text-deep-blue group-hover:text-classic-green">{c.title}</span>
+                    <span className="min-w-0 truncate text-sm text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2">{c.title}</span>
                     <span className="flex shrink-0 items-center gap-2">
                       <Chip className="bg-cool-12 text-deep-blue/55"><Clock size={11} /> {c.duration}</Chip>
                       <PriceChip price={c.price} />

@@ -85,12 +85,12 @@ export function PathBuilder({ roles, rolePaths, catalog }: { roles: Role[]; role
                     <button onClick={() => act(() => pbMoveStep(s.stepId, "down"))} disabled={i === band.nodes.length - 1 || pending} className="text-deep-blue/40 hover:text-classic-green disabled:opacity-30" aria-label="Move down"><ChevronDown size={15} /></button>
                   </div>
                   {s.cert && <Award size={15} className="text-classic-green" />}
-                  <span className={`min-w-0 flex-1 truncate text-sm ${s.missing ? "text-orange" : "text-deep-blue"}`}>{s.title}</span>
+                  <span className={`min-w-0 flex-1 truncate text-sm ${s.missing ? "font-semibold text-deep-blue" : "text-deep-blue"}`}>{s.title}</span>
                   {s.elective && <span className="mono-label rounded-full bg-deep-blue/5 px-2 py-0.5 text-xs text-deep-blue/55">Optional</span>}
                   <span className="mono-label text-xs text-deep-blue/45">{s.duration}</span>
-                  <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${s.price !== "FREE" ? "bg-orange/15 text-orange" : "bg-classic-green/15 text-dark-green"}`}>{s.price !== "FREE" ? "$$" : "FREE"}</span>
+                  <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${s.price !== "FREE" ? "bg-orange/15 text-deep-blue" : "bg-classic-green/15 text-deep-blue"}`}>{s.price !== "FREE" ? "$$" : "FREE"}</span>
                   {!s.cert && (
-                    <button onClick={() => act(() => pbToggleElective(s.stepId))} disabled={pending} className="mono-label rounded-full border border-cool-13 px-2.5 py-0.5 text-xs text-deep-blue/50 transition hover:border-classic-green hover:text-classic-green">
+                    <button onClick={() => act(() => pbToggleElective(s.stepId))} disabled={pending} className="mono-label rounded-full border border-cool-13 px-2.5 py-0.5 text-xs text-deep-blue/50 transition hover:border-classic-green">
                       {s.elective ? "Make required" : "Make optional"}
                     </button>
                   )}
@@ -156,7 +156,7 @@ export function PathBuilder({ roles, rolePaths, catalog }: { roles: Role[]; role
                 <span className="min-w-0 flex-1 truncate text-sm text-deep-blue">{c.title}</span>
                 <span className="mono-label hidden text-xs text-deep-blue/40 sm:inline">{c.category}</span>
                 <span className="mono-label text-xs text-deep-blue/45">{fmtDur(c.durationSec)}</span>
-                <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${c.priceUsd > 0 ? "bg-orange/15 text-orange" : "bg-classic-green/15 text-dark-green"}`}>{c.priceUsd > 0 ? "$$" : "FREE"}</span>
+                <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${c.priceUsd > 0 ? "bg-orange/15 text-deep-blue" : "bg-classic-green/15 text-deep-blue"}`}>{c.priceUsd > 0 ? "$$" : "FREE"}</span>
                 <button
                   onClick={() => { if (targetBand) act(() => pbAddCourse(targetBand, c.id)); }}
                   disabled={pending || !targetBand}

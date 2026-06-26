@@ -48,7 +48,7 @@ export function PillarDetail({
                     href={ref.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex items-start gap-1.5 text-sm text-deep-blue/80 transition hover:text-classic-green"
+                    className="group flex items-start gap-1.5 text-sm text-deep-blue/80 transition hover:underline decoration-classic-green decoration-2 underline-offset-2"
                   >
                     <span>{ref.title}</span>
                     <ArrowUpRight
@@ -86,7 +86,7 @@ export function PillarDetail({
                   href={post.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="group block text-sm text-deep-blue/80 transition hover:text-classic-green"
+                  className="group block text-sm text-deep-blue/80 transition hover:underline decoration-classic-green decoration-2 underline-offset-2"
                 >
                   {post.title}
                   <span className="mono-label ml-1.5 text-deep-blue/40">{fmt(post.date)}</span>

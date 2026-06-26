@@ -33,14 +33,14 @@ export default function AdminWorkshops() {
               <div className="flex items-center gap-2">
                 <span
                   className={`mono-label rounded-full px-2 py-0.5 text-xs ${
-                    w.status === "upcoming" ? "bg-bright-green/30 text-dark-green" : "bg-cool-13 text-deep-blue/60"
+                    w.status === "upcoming" ? "bg-bright-green/30 text-deep-blue" : "bg-cool-13 text-deep-blue/60"
                   }`}
                 >
                   {w.status}
                 </span>
                 <span
                   className={`mono-label rounded-full px-2 py-0.5 text-xs ${
-                    w.source === "auto" ? "bg-sky-blue/40 text-deep-blue/70" : "bg-classic-green/15 text-dark-green"
+                    w.source === "auto" ? "bg-sky-blue/40 text-deep-blue/70" : "bg-classic-green/15 text-deep-blue"
                   }`}
                 >
                   {w.source === "auto" ? "synced" : "manual"}

@@ -20,7 +20,7 @@ const realPrice = (usd: number) => (usd > 0 ? `$${usd}` : "Free");
 
 function PriceChip({ usd }: { usd: number }) {
   return (
-    <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${usd > 0 ? "bg-orange/15 text-orange" : "bg-classic-green/15 text-dark-green"}`}>
+    <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${usd > 0 ? "bg-orange/15 text-deep-blue" : "bg-classic-green/15 text-deep-blue"}`}>
       {chipLabel(usd)}
     </span>
   );
@@ -111,7 +111,7 @@ export function AcademyRows({ items, kind }: { items: AcademyItem[]; kind: Kind 
               <PriceChip usd={item.priceUsd} />
               {kind === "new" && (
                 <form action={reviewCourse.bind(null, item.id)} onClick={(e) => e.stopPropagation()}>
-                  <button type="submit" className="mono-label rounded-full border border-cool-13 px-3 py-1 text-deep-blue/60 transition hover:border-classic-green hover:text-classic-green">
+                  <button type="submit" className="mono-label rounded-full border border-cool-13 px-3 py-1 text-deep-blue/60 transition hover:border-classic-green">
                     Mark reviewed
                   </button>
                 </form>

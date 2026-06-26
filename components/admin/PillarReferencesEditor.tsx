@@ -147,7 +147,7 @@ export function PillarReferencesEditor({
         })}
       </div>
 
-      <button type="button" onClick={addRef} className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-dashed border-cool-14 px-3 py-1.5 text-sm text-deep-blue/70 hover:border-classic-green hover:text-classic-green">
+      <button type="button" onClick={addRef} className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-dashed border-cool-14 px-3 py-1.5 text-sm text-deep-blue/70 hover:border-classic-green">
         <Plus size={14} /> Add reference
       </button>
     </div>

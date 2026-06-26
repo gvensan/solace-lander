@@ -40,7 +40,7 @@ export default function AdminMarketingEvents() {
                 <span className="mono-label rounded-full bg-deep-blue/5 px-2 py-0.5 text-xs text-deep-blue/70">
                   {e.type}
                 </span>
-                <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${e.source === "auto" ? "bg-bright-green/30 text-dark-green" : "bg-cool-13 text-deep-blue/60"}`}>
+                <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${e.source === "auto" ? "bg-bright-green/30 text-deep-blue" : "bg-cool-13 text-deep-blue/60"}`}>
                   {e.source}
                 </span>
                 <span className="text-xs text-deep-blue/50">{e.date} · {e.location}</span>

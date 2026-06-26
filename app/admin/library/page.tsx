@@ -33,7 +33,7 @@ export default function AdminLibrary() {
             <span className="mono-label rounded-full bg-deep-blue/5 px-2 py-0.5 text-xs text-deep-blue/70">
               {libraryCategory(it.category)?.label ?? it.category}
             </span>
-            <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${it.source === "auto" ? "bg-bright-green/30 text-dark-green" : "bg-cool-13 text-deep-blue/60"}`}>
+            <span className={`mono-label rounded-full px-2 py-0.5 text-xs ${it.source === "auto" ? "bg-bright-green/30 text-deep-blue" : "bg-cool-13 text-deep-blue/60"}`}>
               {it.source}
             </span>
             <span className="text-xs text-deep-blue/50">{it.date}</span>

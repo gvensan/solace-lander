@@ -45,7 +45,7 @@ function VideoTiles({ videos }: { videos: Video[] }) {
                 </span>
               </span>
             </div>
-            <p className="mt-2 line-clamp-2 text-sm leading-snug text-deep-blue group-hover:text-classic-green">
+            <p className="mt-2 line-clamp-2 text-sm leading-snug text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2">
               {v.title}
             </p>
           </a>
@@ -99,7 +99,7 @@ function DefaultTiles({ events, videos }: { events: SolaceEvent[]; videos: Video
           <p className="overline flex items-center gap-2 text-deep-blue">
             <CalendarDays size={14} /> {evt.type}
           </p>
-          <h3 className="mt-2 text-base leading-snug text-deep-blue group-hover:text-classic-green">
+          <h3 className="mt-2 text-base leading-snug text-deep-blue group-hover:underline decoration-classic-green decoration-2 underline-offset-2">
             {evt.title}
           </h3>
           <p className="mt-1.5 flex items-center gap-1.5 text-sm text-deep-blue/60">
@@ -136,7 +136,7 @@ export function HubSidebar({
     <div className="rounded-2xl border border-classic-green/40 bg-cool-12 p-5">
       <button
         onClick={onClear}
-        className="mono-label inline-flex items-center gap-1 text-deep-blue/60 transition hover:text-classic-green"
+        className="mono-label inline-flex items-center gap-1 text-deep-blue/60 transition hover:underline decoration-classic-green decoration-2 underline-offset-2"
       >
         <ArrowLeft size={14} /> Back
       </button>
