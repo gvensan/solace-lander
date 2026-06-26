@@ -36,9 +36,6 @@ SolaceID account; the cookie is the session). Real SolaceID OIDC is planned but 
 - **lucide-react** icons
 - Deployed on **Netlify** (`@netlify/plugin-nextjs`)
 
-> ⚠️ **This is not stock Next.js.** This version has breaking changes from older Next.js
-> conventions. Before writing code, read the relevant guide in `node_modules/next/dist/docs/`.
-
 ## Project Structure
 
 ```
