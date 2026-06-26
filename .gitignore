@@ -40,8 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# SQLite database (runtime data)
-# /data/
+# SQLite database. The baseline data/lander.db is intentionally committed as the
+# build-time seed (it's the only DB file bundled to production). Its transient WAL/SHM
+# sidecar files must NOT be committed — they aren't bundled, so any rows parked in the
+# WAL get silently dropped in prod. Checkpoint lander.db before committing it.
 # *.db
-# *.db-journal
-# *.db-wal
+*.db-journal
+*.db-wal
+*.db-shm
