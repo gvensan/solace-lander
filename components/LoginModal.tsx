@@ -3,8 +3,8 @@
 import { DEMO_ACCOUNTS, useAuth, type SolaceUser } from "@/lib/auth";
 import { X, LogIn } from "lucide-react";
 
-// Sign-in is admin-only for now (no public login). Real SolaceID OIDC comes later.
-const SIGNIN_ACCOUNTS = DEMO_ACCOUNTS.filter((a) => a.role === "admin");
+// All demo SolaceID accounts can sign in (members + admin). Real SolaceID OIDC comes later.
+const SIGNIN_ACCOUNTS = DEMO_ACCOUNTS;
 
 export function LoginModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { login } = useAuth();
@@ -31,7 +31,7 @@ export function LoginModal({ open, onClose }: { open: boolean; onClose: () => vo
         <div className="flex items-start justify-between">
           <div>
             <p className="overline text-deep-blue">SolaceID</p>
-            <h2 className="mt-1 text-2xl text-deep-blue">DevRel Sign-In</h2>
+            <h2 className="mt-1 text-2xl text-deep-blue">Sign In</h2>
           </div>
           <button
             onClick={onClose}

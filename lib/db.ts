@@ -38,7 +38,12 @@ function resolveDbPath(): string {
 
 function create(): Database.Database {
   const db = new Database(resolveDbPath());
-  db.pragma("journal_mode = WAL");
+  // Rollback journal (not WAL) on purpose: every committed write lands directly in the
+  // main lander.db file, with no -wal/-shm sidecars to checkpoint. That keeps the file
+  // always self-complete and safe to commit — which is the whole deployment model here
+  // (edit locally → commit data/lander.db → redeploy; only the main file is bundled to
+  // prod). This app is read-heavy / write-rare, so WAL's concurrency edge doesn't matter.
+  db.pragma("journal_mode = DELETE");
   init(db);
   migrate(db);
   seed(db);

@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 import { useAuth } from "@/lib/auth";
 import { LoginModal } from "./LoginModal";
-import { Radio, ChevronDown, LogOut, Menu, X } from "lucide-react";
+import { ChevronDown, LogOut, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "/#topics", label: "Focus Areas" },
@@ -48,9 +49,14 @@ export function TopNav() {
         <nav className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-4 sm:px-6 lg:px-8">
           {/* Logo / wordmark */}
           <Link href="/" className="flex items-center gap-2 text-white" onClick={() => setMobileOpen(false)}>
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-solace-green">
-              <Radio size={18} className="text-dark-blue" />
-            </span>
+            <Image
+              src="/solace-mark.png"
+              alt="Solace"
+              width={32}
+              height={32}
+              priority
+              className="h-8 w-8 rounded-lg"
+            />
             <span className="text-lg font-semibold tracking-tight">
               Solace <span className="text-white">Lander</span>
             </span>
