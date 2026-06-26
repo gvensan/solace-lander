@@ -61,13 +61,12 @@ export function Footer() {
   return (
     <footer className="bg-dark-blue text-white">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        {/* Wordmark — official Solace logo image (per brand: never recolor/redraw) */}
+        {/* Wordmark — official Solace 2025 logo (green wordmark; per brand: never recolor/redraw) */}
         <div className="flex justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://solace.com/wp-content/themes/orbit-media/resources/images/solace-logo-green-home.png"
+            src="/solace-logo-2025-green.png"
             alt="Solace"
-            referrerPolicy="no-referrer"
             className="h-9 w-auto"
           />
         </div>
