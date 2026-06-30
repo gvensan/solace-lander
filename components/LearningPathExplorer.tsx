@@ -239,13 +239,17 @@ export function LearningPathExplorer({
 
       {/* Timeline */}
       <div className="mt-8 space-y-8">
-        {bands.map((band) => {
+        {bands.map((band, idx) => {
           const s = STAGE[band.stage];
+          // The displayed "Stage N" is the band's ordinal position in the timeline
+          // (1-based), derived from render order — NOT band.stage (which is the
+          // color tier 1🟢/2🔵/3🟠 and may repeat or run out of order across bands).
+          const stageNo = idx + 1;
           return (
             <div key={band.key}>
               <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className={`grid h-7 w-7 place-items-center rounded-full ${s.dot} text-xs font-bold text-white`}>{band.stage}</span>
-                <p className={`overline ${s.label}`}>Stage {band.stage} · {band.title}</p>
+                <span className={`grid h-7 w-7 place-items-center rounded-full ${s.dot} text-xs font-bold text-white`}>{stageNo}</span>
+                <p className={`overline ${s.label}`}>Stage {stageNo} · {band.title}</p>
                 {band.totalTime && <span className="mono-label text-deep-blue/40">{band.totalTime} · {priceLabel(band.cost ?? "FREE")}</span>}
                 {band.pathUrl && (
                   <a href={band.pathUrl} target="_blank" rel="noreferrer" className="mono-label inline-flex items-center gap-1 text-deep-blue hover:underline">
